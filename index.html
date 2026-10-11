@@ -133,7 +133,6 @@
             line-height: 1.5;
         }
 
-        /* MODALIDAD ENTREGA */
         .order-type-selector {
             display: inline-flex;
             background: var(--bg-surface);
@@ -212,6 +211,7 @@
             flex-direction: column;
             justify-content: space-between;
             transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
         }
 
         .food-card:hover {
@@ -225,7 +225,6 @@
             aspect-ratio: 16 / 11;
             background: #1e2227;
             overflow: hidden;
-            cursor: pointer;
         }
 
         .food-img-wrapper img {
@@ -300,7 +299,7 @@
             color: var(--text-muted);
         }
 
-        .add-cart-btn {
+        .customize-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-subtle);
             color: #fff;
@@ -318,10 +317,205 @@
             width: 100%;
         }
 
-        .add-cart-btn:hover {
+        .customize-btn:hover {
             background: var(--accent-fire);
             border-color: var(--accent-fire);
             box-shadow: 0 4px 14px var(--accent-fire-glow);
+        }
+
+        /* MODAL DE PERSONALIZACIÓN */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 77, 0, 0.3);
+            border-radius: 22px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-img-banner {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            background: #1e2227;
+        }
+
+        .modal-img-banner img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px; right: 14px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid var(--border-subtle);
+            color: #fff;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .modal-title-box h3 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.6em;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .modal-title-box p {
+            font-size: 0.88em;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .section-label {
+            font-size: 0.8em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .option-row input {
+            accent-color: var(--accent-fire);
+            width: 18px; height: 18px;
+        }
+
+        .option-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .option-extra-price {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .note-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.85em;
+            outline: none;
+        }
+
+        .note-input:focus {
+            border-color: var(--accent-fire);
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .modal-total-calc {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-total-calc span {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.5em;
+            font-weight: 900;
+            color: var(--accent-gold);
+        }
+
+        .modal-total-calc small {
+            font-size: 0.78em;
+            color: var(--text-muted);
+        }
+
+        .confirm-add-btn {
+            background: var(--accent-fire);
+            color: #fff;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 14px;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.95em;
+            cursor: pointer;
+            box-shadow: 0 4px 18px var(--accent-fire-glow);
+            flex-grow: 1;
         }
 
         /* BARRA FLOTANTE */
@@ -383,11 +577,11 @@
             font-weight: 800;
             font-size: 0.85em;
             display: flex;
-            align-items: center;
+            align-items: gap;
             gap: 6px;
         }
 
-        /* MODAL / DRAWER DEL PEDIDO */
+        /* DRAWER LATERAL */
         .drawer-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -460,7 +654,7 @@
         .cart-item-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             background: var(--bg-card);
             padding: 12px 14px;
             border-radius: 14px;
@@ -472,23 +666,31 @@
             font-weight: 700;
         }
 
+        .item-row-info p {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            margin: 3px 0;
+        }
+
         .item-row-info small {
             color: var(--accent-gold);
-            font-weight: 600;
+            font-weight: 700;
+            display: block;
         }
 
         .qty-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 4px;
         }
 
         .qty-btn {
             background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #fff;
-            width: 28px; height: 28px;
-            border-radius: 8px;
+            width: 26px; height: 26px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 800;
         }
@@ -570,8 +772,54 @@
     <button class="filter-btn" onclick="filtrarMenu('sides', this)">Sides & Papas</button>
 </div>
 
-<!-- GRILLA PRODUCTOS -->
+<!-- MENU GRID -->
 <main class="menu-container" id="menu-grid"></main>
+
+<!-- MODAL PERSONALIZAR PRODUCTO (POP-UP) -->
+<div class="modal-overlay" id="product-modal" onclick="if(event.target === this) cerrarModal()">
+    <div class="modal-card">
+        <div class="modal-img-banner">
+            <img id="modal-img" src="" alt="Burger">
+            <button class="modal-close" onclick="cerrarModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-title-box">
+                <h3 id="modal-title">Nombre</h3>
+                <p id="modal-desc">Descripción</p>
+            </div>
+
+            <!-- EXTRAS -->
+            <div>
+                <span class="section-label">Añadir Extras</span>
+                <div class="options-group" id="modal-extras">
+                    <!-- Checkboxes de extras -->
+                </div>
+            </div>
+
+            <!-- SALSAS -->
+            <div>
+                <span class="section-label">Elige tu Salsa</span>
+                <div class="options-group" id="modal-sauces">
+                    <!-- Radios de salsa -->
+                </div>
+            </div>
+
+            <!-- NOTAS -->
+            <div>
+                <span class="section-label">Instrucción Especial</span>
+                <input type="text" id="modal-notes" class="note-input" placeholder="Ej: Sin pepinillos, carne bien cocida...">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div class="modal-total-calc">
+                <span id="modal-total-usd">$0.00</span>
+                <small id="modal-total-bs">0.00 Bs</small>
+            </div>
+            <button class="confirm-add-btn" onclick="confirmarAgregarAlPedido()">Agregar al Pedido</button>
+        </div>
+    </div>
+</div>
 
 <!-- BARRA FLOTANTE -->
 <div class="cart-bar" id="cart-bar" onclick="abrirDrawer()">
@@ -588,7 +836,7 @@
     </div>
 </div>
 
-<!-- DRAWER / RESUMEN DE LA COMANDA -->
+<!-- DRAWER / COMANDA -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="if(event.target === this) cerrarDrawer()">
     <div class="drawer-sheet">
         <div class="drawer-header">
@@ -597,7 +845,7 @@
         </div>
 
         <div class="cart-items-list" id="cart-items-list">
-            <!-- Ítems agregados dinámicamente -->
+            <!-- Ítems -->
         </div>
 
         <div class="drawer-footer">
@@ -624,7 +872,8 @@
 
     let tasaOficial = CONFIG.tasaBackup;
     let tipoEntrega = "Delivery";
-    let carrito = {};
+    let carrito = [];
+    let productoActivo = null;
 
     const MENU = [
         {
@@ -633,8 +882,14 @@
             categoria: "smash",
             tag: "Más Pedida",
             precioUSD: 8.50,
-            desc: "Doble carne smashed de 90g con costra crocante, doble cheddar fundido, pepinillos y salsa 55 en pan brioche.",
-            img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80"
+            desc: "Doble carne smashed de 90g con costra crocante, doble cheddar fundido, pepinillos y salsa 55 en pan brioche tostado.",
+            img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
+            extras: [
+                { nombre: "Extra Tocineta Ahumada", precio: 1.50 },
+                { nombre: "Extra Queso Cheddar", precio: 1.00 },
+                { nombre: "Carne Smash Adicional (90g)", precio: 2.00 }
+            ],
+            salsas: ["Salsa 55 (Casa)", "BBQ Ahumada", "Mayo Ajo", "Sin Salsa"]
         },
         {
             id: "b55-truffle",
@@ -643,7 +898,13 @@
             tag: "Especial",
             precioUSD: 11.00,
             desc: "Doble carne, mermelada de tocineta ahumada artesanal, cebolla crispy y salsa BBQ especial de la casa.",
-            img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&auto=format&fit=crop&q=80"
+            img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&auto=format&fit=crop&q=80",
+            extras: [
+                { nombre: "Extra Mermelada Bacon", precio: 1.50 },
+                { nombre: "Doble Cebolla Crispy", precio: 0.80 },
+                { nombre: "Extra Cheddar Líquido", precio: 1.20 }
+            ],
+            salsas: ["BBQ Especial", "Salsa 55", "Mayo Trufada", "Sin Salsa"]
         },
         {
             id: "b55-combo-duo",
@@ -652,7 +913,12 @@
             tag: "Ahorro",
             precioUSD: 19.50,
             desc: "2x 55 Original Smash + Ración generosa de papas rústicas + 2 refrescos de lata bien fríos.",
-            img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80"
+            img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80",
+            extras: [
+                { nombre: "Mejorar a Papas Loaded con Cheddar", precio: 2.50 },
+                { nombre: "Extra Tocineta en ambas", precio: 2.50 }
+            ],
+            salsas: ["Salsa 55 + BBQ", "2x Salsa 55", "Mayo Ajo + Tártara"]
         },
         {
             id: "b55-fries-loaded",
@@ -661,7 +927,13 @@
             tag: "Para compartir",
             precioUSD: 6.00,
             desc: "Papas fritas rústicas con queso cheddar líquido caliente, tocineta crocante y cebollín fresco.",
-            img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80"
+            img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80",
+            extras: [
+                { nombre: "Extra Tocineta Picada", precio: 1.00 },
+                { nombre: "Doble Queso Cheddar", precio: 1.20 },
+                { nombre: "Topping Jalapeños", precio: 0.80 }
+            ],
+            salsas: ["Cheddar Fundido Extra", "Salsa 55 Aparte", "BBQ Ahumada"]
         }
     ];
 
@@ -696,8 +968,9 @@
             const bsPrecio = (p.precioUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const card = document.createElement("article");
             card.className = "food-card";
+            card.onclick = () => abrirModalPersonalizacion(p.id);
             card.innerHTML = `
-                <div class="food-img-wrapper" onclick="agregarItem('${p.id}')">
+                <div class="food-img-wrapper">
                     <span class="tag-promo">${p.tag}</span>
                     <img src="${p.img}" alt="${p.nombre}" loading="lazy">
                 </div>
@@ -708,8 +981,8 @@
                         <div class="usd-val">$${p.precioUSD.toFixed(2)}</div>
                         <div class="bs-val">Bs. ${bsPrecio}</div>
                     </div>
-                    <button class="add-cart-btn" onclick="agregarItem('${p.id}')">
-                        <span>+ Agregar a la orden</span>
+                    <button class="customize-btn" onclick="event.stopPropagation(); abrirModalPersonalizacion('${p.id}')">
+                        <span>Personalizar y Agregar</span>
                     </button>
                 </div>
             `;
@@ -730,21 +1003,117 @@
         actualizarDrawerYMensaje();
     }
 
-    function agregarItem(id) {
-        if (!carrito[id]) {
-            const prod = MENU.find(m => m.id === id);
-            carrito[id] = { ...prod, cantidad: 1 };
-        } else {
-            carrito[id].cantidad += 1;
-        }
+    /* LÓGICA DEL MODAL POP-UP */
+    function abrirModalPersonalizacion(id) {
+        const prod = MENU.find(m => m.id === id);
+        if (!prod) return;
+        productoActivo = prod;
+
+        document.getElementById("modal-img").src = prod.img;
+        document.getElementById("modal-title").textContent = prod.nombre;
+        document.getElementById("modal-desc").textContent = prod.desc;
+        document.getElementById("modal-notes").value = "";
+
+        // Generar Extras
+        const extrasContainer = document.getElementById("modal-extras");
+        extrasContainer.innerHTML = "";
+        prod.extras.forEach((ext, idx) => {
+            const extBs = (ext.precio * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const label = document.createElement("label");
+            label.className = "option-row";
+            label.innerHTML = `
+                <div class="option-info">
+                    <input type="checkbox" name="modal-extra" value="${idx}" onchange="calcularTotalModal()">
+                    <span>${ext.nombre}</span>
+                </div>
+                <span class="option-extra-price">+$${ext.precio.toFixed(2)} (${extBs} Bs)</span>
+            `;
+            extrasContainer.appendChild(label);
+        });
+
+        // Generar Salsas
+        const saucesContainer = document.getElementById("modal-sauces");
+        saucesContainer.innerHTML = "";
+        prod.salsas.forEach((salsa, idx) => {
+            const label = document.createElement("label");
+            label.className = "option-row";
+            label.innerHTML = `
+                <div class="option-info">
+                    <input type="radio" name="modal-sauce" value="${salsa}" ${idx === 0 ? 'checked' : ''}>
+                    <span>${salsa}</span>
+                </div>
+                <span style="font-size: 0.8em; color: var(--text-muted);">Incluido</span>
+            `;
+            saucesContainer.appendChild(label);
+        });
+
+        calcularTotalModal();
+        document.getElementById("product-modal").classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function calcularTotalModal() {
+        if (!productoActivo) return;
+        let total = productoActivo.precioUSD;
+        const checkboxes = document.querySelectorAll('input[name="modal-extra"]:checked');
+        checkboxes.forEach(cb => {
+            const idx = parseInt(cb.value);
+            total += productoActivo.extras[idx].precio;
+        });
+
+        const totalBs = total * tasaOficial;
+        document.getElementById("modal-total-usd").textContent = `$${total.toFixed(2)}`;
+        document.getElementById("modal-total-bs").textContent = `${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs`;
+    }
+
+    function cerrarModal() {
+        document.getElementById("product-modal").classList.remove("active");
+        document.body.style.overflow = "";
+        productoActivo = null;
+    }
+
+    function confirmarAgregarAlPedido() {
+        if (!productoActivo) return;
+
+        // Recoger extras seleccionados
+        const extrasSeleccionados = [];
+        let costoExtras = 0;
+        document.querySelectorAll('input[name="modal-extra"]:checked').forEach(cb => {
+            const ext = productoActivo.extras[parseInt(cb.value)];
+            extrasSeleccionados.push(ext.nombre);
+            costoExtras += ext.precio;
+        });
+
+        // Recoger salsa
+        const salsaRadio = document.querySelector('input[name="modal-sauce"]:checked');
+        const salsaSeleccionada = salsaRadio ? salsaRadio.value : "Sin Salsa";
+
+        // Nota
+        const nota = document.getElementById("modal-notes").value.trim();
+
+        const itemFinal = {
+            idUnico: Date.now() + Math.random(),
+            idOriginal: productoActivo.id,
+            nombre: productoActivo.nombre,
+            precioUnitario: productoActivo.precioUSD + costoExtras,
+            extras: extrasSeleccionados,
+            salsa: salsaSeleccionada,
+            nota: nota,
+            cantidad: 1
+        };
+
+        carrito.push(itemFinal);
+        cerrarModal();
         actualizarDrawerYMensaje();
     }
 
-    function modificarCantidad(id, delta) {
-        if (!carrito[id]) return;
-        carrito[id].cantidad += delta;
-        if (carrito[id].cantidad <= 0) {
-            delete carrito[id];
+    function modificarCantidadItem(idUnico, delta) {
+        const item = carrito.find(i => i.idUnico === idUnico);
+        if (!item) return;
+
+        item.cantidad += delta;
+        if (item.cantidad <= 0) {
+            carrito = carrito.filter(i => i.idUnico !== idUnico);
         }
         actualizarDrawerYMensaje();
     }
@@ -759,8 +1128,7 @@
         const drawerBs = document.getElementById("drawer-total-bs");
         const waLink = document.getElementById("wa-checkout-link");
 
-        const items = Object.values(carrito);
-        const totalItems = items.reduce((acc, cur) => acc + cur.cantidad, 0);
+        const totalItems = carrito.reduce((acc, cur) => acc + cur.cantidad, 0);
 
         if (totalItems === 0) {
             bar.classList.remove("active");
@@ -768,7 +1136,7 @@
             return;
         }
 
-        const totalUSD = items.reduce((acc, cur) => acc + (cur.precioUSD * cur.cantidad), 0);
+        const totalUSD = carrito.reduce((acc, cur) => acc + (cur.precioUnitario * cur.cantidad), 0);
         const totalBs = totalUSD * tasaOficial;
 
         countEl.textContent = `${totalItems} ${totalItems === 1 ? 'ítem' : 'ítems'}`;
@@ -781,20 +1149,32 @@
         list.innerHTML = "";
         let textoItemsWA = "";
 
-        items.forEach(item => {
-            textoItemsWA += `• ${item.cantidad}x ${item.nombre} ($${(item.precioUSD * item.cantidad).toFixed(2)})\n`;
-            
+        carrito.forEach(item => {
+            const subtotal = item.precioUnitario * item.cantidad;
+            let detalleExtras = "";
+            if (item.extras.length > 0) {
+                detalleExtras += `Extras: ${item.extras.join(", ")} | `;
+            }
+            detalleExtras += `Salsa: ${item.salsa}`;
+            if (item.nota) {
+                detalleExtras += ` | Nota: "${item.nota}"`;
+            }
+
+            textoItemsWA += `• ${item.cantidad}x ${item.nombre} ($${subtotal.toFixed(2)})\n`;
+            textoItemsWA += `  └ ${detalleExtras}\n`;
+
             const row = document.createElement("div");
             row.className = "cart-item-row";
             row.innerHTML = `
                 <div class="item-row-info">
                     <h4>${item.nombre}</h4>
-                    <small>$${(item.precioUSD * item.cantidad).toFixed(2)}</small>
+                    <p>${detalleExtras}</p>
+                    <small>$${subtotal.toFixed(2)}</small>
                 </div>
                 <div class="qty-controls">
-                    <button class="qty-btn" onclick="modificarCantidad('${item.id}', -1)">-</button>
+                    <button class="qty-btn" onclick="modificarCantidadItem(${item.idUnico}, -1)">-</button>
                     <span style="font-weight: 800; min-width: 18px; text-align: center;">${item.cantidad}</span>
-                    <button class="qty-btn" onclick="modificarCantidad('${item.id}', 1)">+</button>
+                    <button class="qty-btn" onclick="modificarCantidadItem(${item.idUnico}, 1)">+</button>
                 </div>
             `;
             list.appendChild(row);
@@ -809,7 +1189,7 @@
                         `💵 $${totalUSD.toFixed(2)}\n` +
                         `🇻🇪 Bs. ${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n` +
                         `_(Tasa BCV: ${tasaOficial.toFixed(2)} Bs/$)_\n\n` +
-                        `Hola, quiero coordinar los datos de pago y entrega.`;
+                        `Hola, quiero confirmar los datos de pago y entrega.`;
 
         waLink.href = `https://wa.me/${CONFIG.telefonoWA}?text=${encodeURIComponent(mensaje)}`;
         bar.classList.add("active");
