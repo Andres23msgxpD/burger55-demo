@@ -477,6 +477,17 @@
             border-color: var(--accent-fire);
         }
 
+        /* CANTIDAD MODAL */
+        .modal-qty-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
         .modal-footer {
             padding: 16px 20px;
             border-top: 1px solid var(--border-subtle);
@@ -697,12 +708,40 @@
             font-weight: 800;
         }
 
+        /* SELECTOR METODOS DE PAGO EN DRAWER */
+        .payment-methods-box {
+            display: flex;
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .pay-btn {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 8px 4px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.75em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .pay-btn.active {
+            border-color: var(--accent-fire);
+            color: #fff;
+            background: rgba(255, 77, 0, 0.15);
+        }
+
         .drawer-footer {
-            padding-top: 18px;
+            padding-top: 14px;
             border-top: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .drawer-total-box {
@@ -793,23 +832,29 @@
             <!-- EXTRAS -->
             <div>
                 <span class="section-label">Añadir Extras</span>
-                <div class="options-group" id="modal-extras">
-                    <!-- Checkboxes de extras -->
-                </div>
+                <div class="options-group" id="modal-extras"></div>
             </div>
 
             <!-- SALSAS -->
             <div>
                 <span class="section-label">Elige tu Salsa</span>
-                <div class="options-group" id="modal-sauces">
-                    <!-- Radios de salsa -->
-                </div>
+                <div class="options-group" id="modal-sauces"></div>
             </div>
 
             <!-- NOTAS -->
             <div>
                 <span class="section-label">Instrucción Especial</span>
                 <input type="text" id="modal-notes" class="note-input" placeholder="Ej: Sin pepinillos, carne bien cocida...">
+            </div>
+
+            <!-- CANTIDAD -->
+            <div class="modal-qty-container">
+                <span style="font-size: 0.9em; font-weight: 700;">Cantidad:</span>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="ajustarQtyModal(-1)">-</button>
+                    <span id="modal-qty-val" style="font-weight: 800; min-width: 22px; text-align: center;">1</span>
+                    <button class="qty-btn" onclick="ajustarQtyModal(1)">+</button>
+                </div>
             </div>
         </div>
 
@@ -846,8 +891,16 @@
             <button class="close-btn" onclick="cerrarDrawer()">✕</button>
         </div>
 
-        <div class="cart-items-list" id="cart-items-list">
-            <!-- Ítems -->
+        <div class="cart-items-list" id="cart-items-list"></div>
+
+        <!-- METODOS DE PAGO -->
+        <div>
+            <span class="section-label" style="margin-bottom: 4px;">Método de Pago:</span>
+            <div class="payment-methods-box">
+                <button class="pay-btn active" onclick="cambiarMetodoPago('Pago Móvil (BCV)', this)">📱 Pago Móvil</button>
+                <button class="pay-btn" onclick="cambiarMetodoPago('Binance / USDT', this)">🟡 Binance</button>
+                <button class="pay-btn" onclick="cambiarMetodoPago('Efectivo Divisas', this)">💵 Efectivo</button>
+            </div>
         </div>
 
         <div class="drawer-footer">
@@ -874,8 +927,10 @@
 
     let tasaOficial = CONFIG.tasaBackup;
     let tipoEntrega = "Delivery";
+    let metodoPago = "Pago Móvil (BCV)";
     let carrito = [];
     let productoActivo = null;
+    let cantidadModal = 1;
 
     const MENU = [
         {
@@ -1004,18 +1059,26 @@
         actualizarDrawerYMensaje();
     }
 
-    /* LÓGICA DEL MODAL POP-UP */
+    function cambiarMetodoPago(metodo, btn) {
+        metodoPago = metodo;
+        document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        actualizarDrawerYMensaje();
+    }
+
+    /* MODAL POP-UP */
     function abrirModalPersonalizacion(id) {
         const prod = MENU.find(m => m.id === id);
         if (!prod) return;
         productoActivo = prod;
+        cantidadModal = 1;
 
         document.getElementById("modal-img").src = prod.img;
         document.getElementById("modal-title").textContent = prod.nombre;
         document.getElementById("modal-desc").textContent = prod.desc;
         document.getElementById("modal-notes").value = "";
+        document.getElementById("modal-qty-val").textContent = "1";
 
-        // Generar Extras
         const extrasContainer = document.getElementById("modal-extras");
         extrasContainer.innerHTML = "";
         prod.extras.forEach((ext, idx) => {
@@ -1032,7 +1095,6 @@
             extrasContainer.appendChild(label);
         });
 
-        // Generar Salsas
         const saucesContainer = document.getElementById("modal-sauces");
         saucesContainer.innerHTML = "";
         prod.salsas.forEach((salsa, idx) => {
@@ -1053,18 +1115,25 @@
         document.body.style.overflow = "hidden";
     }
 
+    function ajustarQtyModal(delta) {
+        cantidadModal += delta;
+        if (cantidadModal < 1) cantidadModal = 1;
+        document.getElementById("modal-qty-val").textContent = cantidadModal;
+        calcularTotalModal();
+    }
+
     function calcularTotalModal() {
         if (!productoActivo) return;
-        let total = productoActivo.precioUSD;
-        const checkboxes = document.querySelectorAll('input[name="modal-extra"]:checked');
-        checkboxes.forEach(cb => {
-            const idx = parseInt(cb.value);
-            total += productoActivo.extras[idx].precio;
+        let baseUnitario = productoActivo.precioUSD;
+        document.querySelectorAll('input[name="modal-extra"]:checked').forEach(cb => {
+            baseUnitario += productoActivo.extras[parseInt(cb.value)].precio;
         });
 
-        const totalBs = total * tasaOficial;
-        document.getElementById("modal-total-usd").textContent = `$${total.toFixed(2)}`;
-        document.getElementById("modal-total-bs").textContent = `${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs`;
+        const totalFinalUSD = baseUnitario * cantidadModal;
+        const totalFinalBs = totalFinalUSD * tasaOficial;
+
+        document.getElementById("modal-total-usd").textContent = `$${totalFinalUSD.toFixed(2)}`;
+        document.getElementById("modal-total-bs").textContent = `${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs`;
     }
 
     function cerrarModal() {
@@ -1076,7 +1145,6 @@
     function confirmarAgregarAlPedido() {
         if (!productoActivo) return;
 
-        // Recoger extras seleccionados
         const extrasSeleccionados = [];
         let costoExtras = 0;
         document.querySelectorAll('input[name="modal-extra"]:checked').forEach(cb => {
@@ -1085,14 +1153,11 @@
             costoExtras += ext.precio;
         });
 
-        // Recoger salsa
         const salsaRadio = document.querySelector('input[name="modal-sauce"]:checked');
         const salsaSeleccionada = salsaRadio ? salsaRadio.value : "Sin Salsa";
-
-        // Nota
         const nota = document.getElementById("modal-notes").value.trim();
 
-        const itemFinal = {
+        carrito.push({
             idUnico: Date.now() + Math.random(),
             idOriginal: productoActivo.id,
             nombre: productoActivo.nombre,
@@ -1100,10 +1165,9 @@
             extras: extrasSeleccionados,
             salsa: salsaSeleccionada,
             nota: nota,
-            cantidad: 1
-        };
+            cantidad: cantidadModal
+        });
 
-        carrito.push(itemFinal);
         cerrarModal();
         actualizarDrawerYMensaje();
     }
@@ -1183,6 +1247,7 @@
 
         const mensaje = `🍔 *NUEVO PEDIDO - BURGER 55*\n` +
                         `Modalidad: *${tipoEntrega}*\n` +
+                        `Pago sugerido: *${metodoPago}*\n` +
                         `--------------------------------\n` +
                         `${textoItemsWA}` +
                         `--------------------------------\n` +
@@ -1190,7 +1255,7 @@
                         `💵 $${totalUSD.toFixed(2)}\n` +
                         `🇻🇪 Bs. ${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n` +
                         `_(Tasa BCV: ${tasaOficial.toFixed(2)} Bs/$)_\n\n` +
-                        `Hola, quiero confirmar los datos de pago y entrega.`;
+                        `Hola, confirmo este pedido para entrega.`;
 
         waLink.href = `https://wa.me/${CONFIG.telefonoWA}?text=${encodeURIComponent(mensaje)}`;
         bar.classList.add("active");
