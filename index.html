@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger 55 CCS | Menú Interactivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0c0d0e;
+            --bg-surface: #141619;
+            --bg-card: #1b1e22;
+            --accent-fire: #ff4d00;
+            --accent-fire-glow: rgba(255, 77, 0, 0.35);
+            --accent-gold: #ffb800;
+            --text-high: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --whatsapp-color: #25d366;
+            --radius-card: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-high);
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* BANNER DINÁMICO TASA BCV */
+        .live-ticker {
+            background: linear-gradient(90deg, #180900, #240e00, #180900);
+            border-bottom: 1px solid rgba(255, 77, 0, 0.25);
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.82em;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .ticker-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse-dot 1.8s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .rate-badge {
+            background: var(--accent-fire);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.9em;
+            box-shadow: 0 2px 10px var(--accent-fire-glow);
+        }
+
+        /* HERO & BRAND */
+        header {
+            padding: 40px 24px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            font-size: 0.75em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            background: rgba(255, 184, 0, 0.1);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 184, 0, 0.2);
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: clamp(2.4em, 8vw, 3.8em);
+            font-weight: 900;
+            line-height: 0.95;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 span {
+            color: var(--accent-fire);
+            -webkit-text-fill-color: var(--accent-fire);
+        }
+
+        .brand-tagline {
+            color: var(--text-muted);
+            font-size: 0.95em;
+            max-width: 420px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        /* FILTROS / PILLS */
+        .filter-scroller {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 20px 24px;
+            justify-content: center;
+            scrollbar-width: none;
+        }
+        .filter-scroller::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85em;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-fire);
+            color: #fff;
+            border-color: var(--accent-fire);
+            box-shadow: 0 4px 18px var(--accent-fire-glow);
+            transform: translateY(-2px);
+        }
+
+        /* GRID PRODUCTOS */
+        .menu-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 24px;
+        }
+
+        .food-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .food-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 77, 0, 0.4);
+        }
+
+        .food-img-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            background: #1e2227;
+            overflow: hidden;
+        }
+
+        .food-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .food-card:hover .food-img-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .tag-promo {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(12, 13, 14, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--accent-gold);
+            font-size: 0.72em;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+            letter-spacing: 1px;
+        }
+
+        .food-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .food-title {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.4em;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .food-desc {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-subtle);
+        }
+
+        .usd-val {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.6em;
+            font-weight: 900;
+            color: var(--accent-gold);
+            line-height: 1;
+        }
+
+        .bs-val {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .add-cart-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: #fff;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9em;
+            padding: 13px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .add-cart-btn:hover {
+            background: var(--accent-fire);
+            border-color: var(--accent-fire);
+            box-shadow: 0 4px 14px var(--accent-fire-glow);
+        }
+
+        /* BARRA FLOTANTE DEL CARRITO */
+        .cart-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120%);
+            width: calc(100% - 36px);
+            max-width: 550px;
+            background: rgba(20, 22, 25, 0.94);
+            border: 1px solid rgba(255, 77, 0, 0.4);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--accent-fire-glow);
+            padding: 14px 20px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 999;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-bar.active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .cart-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .cart-count {
+            font-size: 0.8em;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cart-totals {
+            font-size: 1.15em;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .cart-totals small {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-left: 6px;
+        }
+
+        .checkout-wa-btn {
+            background: var(--whatsapp-color);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .checkout-wa-btn:hover {
+            transform: scale(1.04);
+            filter: brightness(1.1);
+        }
+
+        .checkout-wa-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        @media (max-width: 600px) {
+            .filter-scroller { justify-content: flex-start; }
+            .cart-bar { padding: 12px 16px; border-radius: 18px; }
+            .checkout-wa-btn { padding: 10px 15px; font-size: 0.85em; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TICKER BCV -->
+<div class="live-ticker">
+    <div class="ticker-pill">
+        <span class="status-dot"></span>
+        <span>BCV En Vivo</span>
+    </div>
+    <div class="rate-badge" id="bcv-text">Consultando...</div>
+</div>
+
+<!-- HEADER BURGER 55 -->
+<header>
+    <div class="brand-badge">Caracas • Sabores al Fuego</div>
+    <h1>BURGER <span>55</span></h1>
+    <p class="brand-tagline">Smash burgers artesanales, pan brioche de autor y combos directos a tu puerta.</p>
+</header>
+
+<!-- CATEGORÍAS -->
+<div class="filter-scroller">
+    <button class="filter-btn active" onclick="filtrarMenu('todos', this)">🔥 Todo</button>
+    <button class="filter-btn" onclick="filtrarMenu('smash', this)">Burgers</button>
+    <button class="filter-btn" onclick="filtrarMenu('combos', this)">Combos</button>
+    <button class="filter-btn" onclick="filtrarMenu('sides', this)">Sides & Papas</button>
+</div>
+
+<!-- PRODUCTOS -->
+<main class="menu-container" id="menu-grid">
+    <!-- JS inyecta las cards aquí -->
+</main>
+
+<!-- BARRA FLOTANTE CARRITO -->
+<div class="cart-bar" id="cart-bar">
+    <div class="cart-summary">
+        <span class="cart-count" id="cart-count">0 ítems agregados</span>
+        <div class="cart-totals">
+            <span id="cart-usd">$0.00</span>
+            <small id="cart-bs">(0.00 Bs)</small>
+        </div>
+    </div>
+    <a href="#" id="cart-wa-btn" target="_blank" class="checkout-wa-btn">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        <span>Pedir por WhatsApp</span>
+    </a>
+</div>
+
+<script>
+    const CONFIG = {
+        telefonoWA: "584241234567", // Número de Burger 55
+        tasaBackup: 866.56
+    };
+
+    let tasaOficial = CONFIG.tasaBackup;
+    let carrito = [];
+
+    const MENU = [
+        {
+            id: "b55-classic",
+            nombre: "55 Original Smash",
+            categoria: "smash",
+            tag: "Más Pedida",
+            precioUSD: 8.50,
+            desc: "Doble carne smashed de 90g con costra crocante, doble queso cheddar fundido, pepinillos y salsa 55 en pan brioche tostado con mantequilla.",
+            img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            id: "b55-truffle",
+            nombre: "Smoked Bacon Melt",
+            categoria: "smash",
+            tag: "Especial",
+            precioUSD: 11.00,
+            desc: "Doble carne, mermelada de tocineta ahumada hecha en casa, cebolla crispy y salsa BBQ especial de la casa.",
+            img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            id: "b55-combo-duo",
+            nombre: "Combo Dúo Brutal",
+            categoria: "combos",
+            tag: "Ahorro",
+            precioUSD: 19.50,
+            desc: "2x 55 Original Smash + Ración generosa de papas rústicas + 2 refrescos de lata bien fríos.",
+            img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            id: "b55-fries-loaded",
+            nombre: "Papas 55 Loaded",
+            categoria: "sides",
+            tag: "Para compartir",
+            precioUSD: 6.00,
+            desc: "Papas fritas corte grueso coronadas con queso cheddar líquido, trozos de tocineta y cebollín fresco.",
+            img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80"
+        }
+    ];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        await sincronizarTasaBCV();
+        renderizarCards('todos');
+    });
+
+    async function sincronizarTasaBCV() {
+        const badge = document.getElementById("bcv-text");
+        try {
+            const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.promedio) {
+                    tasaOficial = data.promedio;
+                }
+            }
+        } catch (e) {
+            console.warn("Usando tasa de respaldo");
+        }
+        badge.textContent = `Bs. ${tasaOficial.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function renderizarCards(categoria) {
+        const grid = document.getElementById("menu-grid");
+        grid.innerHTML = "";
+
+        const items = categoria === 'todos' ? MENU : MENU.filter(i => i.categoria === categoria);
+
+        items.forEach(p => {
+            const bsPrecio = (p.precioUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const card = document.createElement("article");
+            card.className = "food-card";
+            card.innerHTML = `
+                <div class="food-img-wrapper">
+                    <span class="tag-promo">${p.tag}</span>
+                    <img src="${p.img}" alt="${p.nombre}" loading="lazy">
+                </div>
+                <div class="food-content">
+                    <h3 class="food-title">${p.nombre}</h3>
+                    <p class="food-desc">${p.desc}</p>
+                    <div class="price-row">
+                        <div class="usd-val">$${p.precioUSD.toFixed(2)}</div>
+                        <div class="bs-val">Bs. ${bsPrecio}</div>
+                    </div>
+                    <button class="add-cart-btn" onclick="agregarAlCarrito('${p.id}')">
+                        <span>+ Agregar al Pedido</span>
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function filtrarMenu(categoria, btn) {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderizarCards(categoria);
+    }
+
+    function agregarAlCarrito(id) {
+        const item = MENU.find(m => m.id === id);
+        if (!item) return;
+
+        carrito.push(item);
+        actualizarUIBarra();
+    }
+
+    function actualizarUIBarra() {
+        const bar = document.getElementById("cart-bar");
+        const count = document.getElementById("cart-count");
+        const usdEl = document.getElementById("cart-usd");
+        const bsEl = document.getElementById("cart-bs");
+        const waBtn = document.getElementById("cart-wa-btn");
+
+        if (carrito.length === 0) {
+            bar.classList.remove("active");
+            return;
+        }
+
+        const totalUSD = carrito.reduce((acc, cur) => acc + cur.precioUSD, 0);
+        const totalBs = totalUSD * tasaOficial;
+
+        count.textContent = `${carrito.length} ${carrito.length === 1 ? 'producto' : 'productos'} en la orden`;
+        usdEl.textContent = `$${totalUSD.toFixed(2)}`;
+        bsEl.textContent = `(${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)`;
+
+        // Construir mensaje estructurado para WhatsApp
+        let resumenItems = {};
+        carrito.forEach(p => {
+            resumenItems[p.nombre] = (resumenItems[p.nombre] || 0) + 1;
+        });
+
+        let mensaje = `🍔 *NUEVO PEDIDO - BURGER 55*\n--------------------------------\n`;
+        for (const [nombre, cant] of Object.entries(resumenItems)) {
+            mensaje += `• ${cant}x ${nombre}\n`;
+        }
+        mensaje += `--------------------------------\n`;
+        mensaje += `*TOTAL A PAGAR:*\n💵 $${totalUSD.toFixed(2)}\n🇻🇪 Bs. ${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n`;
+        mensaje += `_(Tasa BCV: ${tasaOficial.toFixed(2)} Bs/$)_\n\nQuiero coordinar la entrega por favor.`;
+
+        waBtn.href = `https://wa.me/${CONFIG.telefonoWA}?text=${encodeURIComponent(mensaje)}`;
+        bar.classList.add("active");
+    }
+</script>
+</body>
+</html>
