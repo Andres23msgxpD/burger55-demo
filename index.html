@@ -211,7 +211,6 @@
             flex-direction: column;
             justify-content: space-between;
             transition: transform 0.3s ease, border-color 0.3s ease;
-            cursor: pointer;
         }
 
         .food-card:hover {
@@ -225,6 +224,7 @@
             aspect-ratio: 16 / 11;
             background: #1e2227;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .food-img-wrapper img {
@@ -252,6 +252,7 @@
             padding: 5px 12px;
             border-radius: 999px;
             letter-spacing: 0.5px;
+            pointer-events: none;
         }
 
         .food-content {
@@ -267,6 +268,7 @@
             font-weight: 800;
             color: #fff;
             margin-bottom: 6px;
+            cursor: pointer;
         }
 
         .food-desc {
@@ -577,7 +579,7 @@
             font-weight: 800;
             font-size: 0.85em;
             display: flex;
-            align-items: gap;
+            align-items: center;
             gap: 6px;
         }
 
@@ -968,20 +970,19 @@
             const bsPrecio = (p.precioUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const card = document.createElement("article");
             card.className = "food-card";
-            card.onclick = () => abrirModalPersonalizacion(p.id);
             card.innerHTML = `
-                <div class="food-img-wrapper">
+                <div class="food-img-wrapper" onclick="abrirModalPersonalizacion('${p.id}')">
                     <span class="tag-promo">${p.tag}</span>
                     <img src="${p.img}" alt="${p.nombre}" loading="lazy">
                 </div>
                 <div class="food-content">
-                    <h3 class="food-title">${p.nombre}</h3>
+                    <h3 class="food-title" onclick="abrirModalPersonalizacion('${p.id}')">${p.nombre}</h3>
                     <p class="food-desc">${p.desc}</p>
                     <div class="price-row">
                         <div class="usd-val">$${p.precioUSD.toFixed(2)}</div>
                         <div class="bs-val">Bs. ${bsPrecio}</div>
                     </div>
-                    <button class="customize-btn" onclick="event.stopPropagation(); abrirModalPersonalizacion('${p.id}')">
+                    <button class="customize-btn" onclick="abrirModalPersonalizacion('${p.id}')">
                         <span>Personalizar y Agregar</span>
                     </button>
                 </div>
