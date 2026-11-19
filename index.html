@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BURGER 55 CCS | Smash Burgers al Fuego</title>
-    <meta name="description" content="Smash burgers artesanales, pan brioche tostado de autor y combos directos a tu puerta en Caracas. Tasa oficial BCV en vivo.">
+    <meta name="description" content="Smash burgers artesanales, pan brioche tostado de autor y combos directos a tu puerta en Caracas. Tasa oficial BCV en vivo y delivery express.">
 
     <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,11 +29,11 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     boxShadow: {
-                        'hard': '3px 3px 0px #141413',
+                        'hard': '4px 4px 0px #141413',
                         'hard-sm': '2px 2px 0px #141413',
-                        'hard-lg': '5px 5px 0px #141413',
-                        'hard-red': '3px 3px 0px #D9381E',
-                        'hard-cheddar': '3px 3px 0px #F59E0B',
+                        'hard-lg': '6px 6px 0px #141413',
+                        'hard-red': '4px 4px 0px #D9381E',
+                        'hard-cheddar': '4px 4px 0px #F59E0B',
                     }
                 }
             }
@@ -48,8 +48,8 @@
             --text-dark: #141413;
             --card-surface: #FFFFFF;
             --border-dark: #141413;
-            --shadow-hard: 3px 3px 0px #141413;
-            --shadow-hard-lg: 5px 5px 0px #141413;
+            --shadow-hard: 4px 4px 0px #141413;
+            --shadow-hard-lg: 6px 6px 0px #141413;
             --shadow-hard-sm: 2px 2px 0px #141413;
             --whatsapp-color: #25d366;
         }
@@ -70,14 +70,14 @@
 
         /* Tactile button press effect */
         .btn-press {
-            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s ease, color 0.15s ease;
+            transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.15s ease, color 0.15s ease;
         }
         .btn-press:hover {
             transform: translate(-1px, -1px);
         }
         .btn-press:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px #141413 !important;
+            transform: translate(2px, 2px) !important;
+            box-shadow: none !important;
         }
 
         /* Active states for selectors */
@@ -98,6 +98,24 @@
             color: var(--accent-cheddar) !important;
             border-color: var(--border-dark) !important;
             box-shadow: 2px 2px 0px var(--border-dark) !important;
+        }
+        .delivery-mode-btn.active {
+            background-color: var(--brand-red) !important;
+            color: #FFFFFF !important;
+            border-color: var(--border-dark) !important;
+            box-shadow: 2px 2px 0px var(--border-dark) !important;
+        }
+
+        /* Remocion pills toggle */
+        .removal-pill {
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .removal-pill.active {
+            background-color: #141413 !important;
+            color: #F6F4EF !important;
+            border-color: #141413 !important;
+            box-shadow: 2px 2px 0px #D9381E !important;
         }
 
         /* Modal transitions */
@@ -173,11 +191,29 @@
         }
     </style>
 </head>
-<body class="bg-[#F6F4EF] text-[#141413] antialiased overflow-x-hidden min-h-screen pb-20">
+<body class="bg-[#F6F4EF] text-[#141413] antialiased overflow-x-hidden min-h-screen pb-24">
+
+    <!-- TEXTURA EDITORIAL DE GRANO FÍSICO (Relieve no intrusivo) -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.035] bg-repeat" style="background-image: url('data:image/svg+xml;utf8,<svg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'noiseFilter\'><feTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/></filter><rect width=\'100%\' height=\'100%\' filter=\'url(%23noiseFilter)\'/></svg>');"></div>
+
+    <!-- BANNER DINÁMICO DE ESTADO DEL LOCAL & TASA BCV EN VIVO -->
+    <div class="bg-[#141413] text-[#F6F4EF] py-1.5 px-3 sm:px-6 border-b-2 border-[#141413] flex items-center justify-between text-xs font-bold relative z-30">
+        <div class="flex items-center gap-2">
+            <span class="store-status-dot w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="store-status-text text-[11px] sm:text-xs font-black uppercase tracking-wider text-emerald-400">Abierto ahora • Cocina activa</span>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-4 text-[11px] sm:text-xs">
+            <div class="flex items-center gap-1.5">
+                <span class="text-neutral-400 uppercase font-black tracking-wider hidden xs:inline">Tasa BCV Oficial:</span>
+                <span class="text-neutral-400 uppercase font-black tracking-wider xs:hidden">BCV:</span>
+                <span id="bcv-text-top" class="text-[#F59E0B] font-black">Consultando...</span>
+            </div>
+        </div>
+    </div>
 
     <!-- 1. NAVBAR FLOTANTE -->
-    <header class="sticky top-3 z-40 max-w-7xl mx-auto px-3 sm:px-6">
-        <div class="bg-[#F6F4EF]/95 backdrop-blur-md border-2 border-[#141413] shadow-[4px_4px_0px_#141413] rounded-2xl px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
+    <header class="sticky top-2 z-40 max-w-7xl mx-auto px-3 sm:px-6 mt-2">
+        <div class="bg-[#F6F4EF]/95 backdrop-blur-md border-2 border-[#141413] shadow-[4px_4px_0px_#141413] rounded-2xl px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4">
             
             <!-- Izquierda: Logo BURGUER 55 en píldora #F59E0B con borde #141413 y sombra dura -->
             <a href="#hero" class="btn-press inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#F59E0B] text-[#141413] font-black text-sm sm:text-base tracking-wider border-2 border-[#141413] shadow-[3px_3px_0px_#141413] cursor-pointer">
@@ -195,17 +231,23 @@
                 <a href="#ubicacion" class="px-3 py-1 text-xs font-black uppercase text-[#141413] hover:text-[#D9381E] transition-colors">Ubicación</a>
             </nav>
 
-            <!-- Derecha: Tasa BCV y Carrito dinámico -->
+            <!-- Derecha: Estado de tienda, Tasa BCV y Carrito dinámico -->
             <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Badge Estado Local en Navbar (sm en adelante) -->
+                <div class="hidden lg:inline-flex store-status-badge items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border-2 border-[#141413] shadow-[2px_2px_0px_#141413] text-xs font-black">
+                    <span class="store-status-dot w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="store-status-text">Abierto ahora</span>
+                </div>
+
                 <!-- Badge Tasa BCV Oficial -->
-                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] text-xs font-extrabold text-[#141413]">
+                <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] text-xs font-extrabold text-[#141413]">
                     <span class="status-dot"></span>
                     <span class="text-[10px] text-[#141413]/70 font-black uppercase hidden sm:inline">BCV</span>
                     <span id="bcv-text" class="font-black text-[#D9381E]">Consultando...</span>
                 </div>
 
-                <!-- Botón Carrito / Comanda -->
-                <button onclick="abrirDrawer()" class="btn-press inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#141413] text-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#D9381E] transition-colors cursor-pointer">
+                <!-- Botón Carrito / Comanda con contador -->
+                <button onclick="abrirDrawer()" class="btn-press inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#141413] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] hover:bg-[#D9381E] transition-colors cursor-pointer">
                     <svg class="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                     </svg>
@@ -232,7 +274,7 @@
         </div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Bloque superior Hero: Columna izquierda + Imagen Central -->
+            <!-- Bloque superior Hero: Columna izquierda + Imagen Central Aterrizada -->
             <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 pt-4 md:pt-8">
                 
                 <!-- Columna Izquierda: Editorial Content -->
@@ -245,7 +287,7 @@
                         <span>SMASH &amp; BURGERS • CARACAS</span>
                     </div>
 
-                    <!-- Titular gigante serif bold con sombra sutil #F59E0B -->
+                    <!-- Titular gigante serif bold con sombra cálida #F59E0B -->
                     <h1 class="font-serif font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.02] tracking-tight text-[#141413] [text-shadow:3px_3px_0px_#F59E0B] mb-4">
                         Carne al Hierro.<br>
                         <span class="text-[#D9381E] italic font-normal">Costra</span> Dorada.
@@ -264,28 +306,34 @@
 
                     <!-- Dos botones tipo píldora -->
                     <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <a href="#menu" class="btn-press inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#D9381E] text-white font-black text-sm uppercase tracking-wider border-2 border-[#141413] shadow-[3px_3px_0px_#141413] cursor-pointer">
+                        <a href="#menu" class="btn-press inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#D9381E] text-white font-black text-sm uppercase tracking-wider border-2 border-[#141413] shadow-[4px_4px_0px_#141413] cursor-pointer">
                             <span>Ver la Carta</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
                         </a>
-                        <a href="#combos" onclick="filtrarMenu('combos', document.querySelector('[data-cat=combos]'))" class="btn-press inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-[#141413] font-black text-sm uppercase tracking-wider border-2 border-[#141413] shadow-[3px_3px_0px_#141413] hover:bg-neutral-50 cursor-pointer">
+                        <a href="#combos" onclick="filtrarMenu('combos', document.querySelector('[data-cat=combos]'))" class="btn-press inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-[#141413] font-black text-sm uppercase tracking-wider border-2 border-[#141413] shadow-[4px_4px_0px_#141413] hover:bg-neutral-50 cursor-pointer">
                             <span>Combos Dúo</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- Punto focal central: burger-hero.png sobre la línea divisoria -->
-                <div class="w-full md:w-[42%] lg:w-[44%] relative flex items-center justify-center mt-6 md:mt-0 px-2 sm:px-0">
+                <!-- Punto focal central: burger-hero.webp optimizada con fetchpriority="high", resplandor cálido y sombra de contacto elíptica -->
+                <div class="w-full md:w-[42%] lg:w-[44%] relative flex flex-col items-center justify-center mt-6 md:mt-0 px-2 sm:px-0">
                     <!-- Respaldo visual #D9381E en móvil (evita overflow-x) -->
                     <div class="md:hidden absolute inset-2 bg-[#D9381E] rounded-3xl -rotate-2 border-2 border-[#141413] shadow-[4px_4px_0px_#141413] transform scale-95"></div>
 
-                    <div class="relative z-10 w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[500px] py-6 md:py-0">
-                        <img src="./burger-hero.png" alt="Burger 55 Original Smash" class="w-full h-auto object-contain filter drop-shadow-[0_20px_25px_rgba(20,20,19,0.45)] transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300">
+                    <!-- Resplandor cálido ambiental detrás de la hamburguesa -->
+                    <div class="absolute w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-[#F59E0B]/30 blur-3xl pointer-events-none -z-0"></div>
+
+                    <div class="relative z-10 w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[500px] py-4 md:py-0 flex flex-col items-center">
+                        <img src="./burger-hero.webp" fetchpriority="high" alt="Burger 55 Original Smash" class="relative z-10 w-full h-auto object-contain filter drop-shadow-[0_20px_25px_rgba(20,20,19,0.45)] transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300">
                         
+                        <!-- Sombra de contacto elíptica realista justo debajo del pan -->
+                        <div class="w-64 h-6 bg-black/35 blur-xl rounded-full mx-auto -mt-4 relative z-0"></div>
+
                         <!-- Badge editorial flotante -->
-                        <div class="absolute -bottom-1 right-2 sm:right-6 bg-[#F59E0B] text-[#141413] font-black text-xs px-3.5 py-1.5 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413] uppercase tracking-wider flex items-center gap-1.5 animate-bounce">
+                        <div class="absolute bottom-6 right-2 sm:right-6 bg-[#F59E0B] text-[#141413] font-black text-xs px-3.5 py-1.5 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413] uppercase tracking-wider flex items-center gap-1.5 animate-bounce z-20">
                             <svg class="w-3.5 h-3.5 fill-[#141413]" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                             </svg>
@@ -295,23 +343,23 @@
                 </div>
             </div>
 
-            <!-- Tira inferior de destacados (Hero Cards): 3 mini-tarjetas -->
-            <div class="mt-12 sm:mt-16 pt-2">
+            <!-- Tira inferior de destacados (Hero Cards): 3 mini-tarjetas con encuadre circular uniforme -->
+            <div class="mt-14 sm:mt-18 pt-2">
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-[#D9381E] border border-[#141413]"></span>
                         <h3 class="font-serif font-black text-lg sm:text-xl text-[#141413] uppercase tracking-wide">Destacados de la Parrilla</h3>
                     </div>
-                    <span class="text-xs font-bold text-[#141413]/60 hidden sm:inline">Toca + para agregar directo o abre para personalizar</span>
+                    <span class="text-xs font-bold text-[#141413]/60 hidden sm:inline">1 toque en + para pedir estándar • Clic para personalizar</span>
                 </div>
 
                 <!-- Carrusel horizontal deslizable en móvil (overflow-x-auto snap-x) / Grid en desktop -->
-                <div class="overflow-x-auto snap-x snap-mandatory flex md:grid md:grid-cols-3 gap-5 pb-4 pt-10 scrollbar-none">
+                <div class="overflow-x-auto snap-x snap-mandatory flex md:grid md:grid-cols-3 gap-5 pb-4 pt-12 scrollbar-none">
                     
                     <!-- Hero Card 1: 55 Original Smash -->
-                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-10 shadow-[3px_3px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#141413]">
-                        <!-- Imagen sobresaliendo del borde superior (-mt-10) -->
-                        <div class="absolute -top-10 left-4 w-16 h-16 rounded-2xl border-2 border-[#141413] shadow-[2px_2px_0px_#141413] overflow-hidden bg-[#141413] cursor-pointer" onclick="abrirModalPersonalizacion('b55-classic')">
+                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-12 shadow-[4px_4px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#141413]">
+                        <!-- Contenedor circular/redondeado uniforme de 20x20 (-mt-10) -->
+                        <div class="absolute -top-10 left-4 w-20 h-20 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413] overflow-hidden bg-white cursor-pointer" onclick="abrirModalPersonalizacion('b55-classic')">
                             <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" alt="55 Original Smash" class="w-full h-full object-cover">
                         </div>
                         <div class="flex justify-end mb-2">
@@ -329,16 +377,21 @@
                                 <span class="text-xl font-serif font-black text-[#D9381E]">$8.50</span>
                                 <span id="hero-bs-b55-classic" class="text-xs font-bold text-[#141413]/70 block">Bs. ...</span>
                             </div>
-                            <button onclick="agregarDirectoHero('b55-classic')" title="Sumar al carrito" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="abrirModalPersonalizacion('b55-classic')" class="btn-press px-2.5 py-1.5 rounded-xl bg-[#F6F4EF] text-[#141413] border-2 border-[#141413] text-[11px] font-black uppercase hover:bg-[#D9381E] hover:text-white transition-all cursor-pointer">
+                                    Editar
+                                </button>
+                                <button onclick="agregarDirectoHero('b55-classic')" title="Sumar al carrito estándar" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Hero Card 2: Smoked Bacon Melt -->
-                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-10 shadow-[3px_3px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#141413]">
-                        <!-- Imagen sobresaliendo del borde superior (-mt-10) -->
-                        <div class="absolute -top-10 left-4 w-16 h-16 rounded-2xl border-2 border-[#141413] shadow-[2px_2px_0px_#141413] overflow-hidden bg-[#141413] cursor-pointer" onclick="abrirModalPersonalizacion('b55-truffle')">
+                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-12 shadow-[4px_4px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#141413]">
+                        <!-- Contenedor circular/redondeado uniforme de 20x20 (-mt-10) -->
+                        <div class="absolute -top-10 left-4 w-20 h-20 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413] overflow-hidden bg-white cursor-pointer" onclick="abrirModalPersonalizacion('b55-truffle')">
                             <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format&fit=crop&q=80" alt="Smoked Bacon Melt" class="w-full h-full object-cover">
                         </div>
                         <div class="flex justify-end mb-2">
@@ -356,16 +409,21 @@
                                 <span class="text-xl font-serif font-black text-[#D9381E]">$11.00</span>
                                 <span id="hero-bs-b55-truffle" class="text-xs font-bold text-[#141413]/70 block">Bs. ...</span>
                             </div>
-                            <button onclick="agregarDirectoHero('b55-truffle')" title="Sumar al carrito" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="abrirModalPersonalizacion('b55-truffle')" class="btn-press px-2.5 py-1.5 rounded-xl bg-[#F6F4EF] text-[#141413] border-2 border-[#141413] text-[11px] font-black uppercase hover:bg-[#D9381E] hover:text-white transition-all cursor-pointer">
+                                    Editar
+                                </button>
+                                <button onclick="agregarDirectoHero('b55-truffle')" title="Sumar al carrito estándar" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Hero Card 3: Combo Dúo Brutal -->
-                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-10 shadow-[3px_3px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#141413]">
-                        <!-- Imagen sobresaliendo del borde superior (-mt-10) -->
-                        <div class="absolute -top-10 left-4 w-16 h-16 rounded-2xl border-2 border-[#141413] shadow-[2px_2px_0px_#141413] overflow-hidden bg-[#141413] cursor-pointer" onclick="abrirModalPersonalizacion('b55-combo-duo')">
+                    <div class="relative bg-white border-2 border-[#141413] rounded-3xl p-4 sm:p-5 pt-12 shadow-[4px_4px_0px_#141413] flex flex-col justify-between min-w-[270px] sm:min-w-0 snap-center transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#141413]">
+                        <!-- Contenedor circular/redondeado uniforme de 20x20 (-mt-10) -->
+                        <div class="absolute -top-10 left-4 w-20 h-20 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413] overflow-hidden bg-white cursor-pointer" onclick="abrirModalPersonalizacion('b55-combo-duo')">
                             <img src="https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=400&auto=format&fit=crop&q=80" alt="Combo Dúo Brutal" class="w-full h-full object-cover">
                         </div>
                         <div class="flex justify-end mb-2">
@@ -383,9 +441,14 @@
                                 <span class="text-xl font-serif font-black text-[#D9381E]">$19.50</span>
                                 <span id="hero-bs-b55-combo-duo" class="text-xs font-bold text-[#141413]/70 block">Bs. ...</span>
                             </div>
-                            <button onclick="agregarDirectoHero('b55-combo-duo')" title="Sumar al carrito" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                            </button>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="abrirModalPersonalizacion('b55-combo-duo')" class="btn-press px-2.5 py-1.5 rounded-xl bg-[#F6F4EF] text-[#141413] border-2 border-[#141413] text-[11px] font-black uppercase hover:bg-[#D9381E] hover:text-white transition-all cursor-pointer">
+                                    Editar
+                                </button>
+                                <button onclick="agregarDirectoHero('b55-combo-duo')" title="Sumar al carrito estándar" class="btn-press w-9 h-9 rounded-full bg-[#D9381E] text-white flex items-center justify-center border-2 border-[#141413] shadow-[2px_2px_0px_#141413] hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -407,22 +470,22 @@
                 Nuestra Carta al Fuego
             </h2>
             <p class="text-sm sm:text-base text-[#141413]/70 font-medium">
-                Pide por delivery o retira en nuestro local. Todos los precios se calculan automáticamente con la tasa oficial BCV.
+                Pide por delivery o retira en nuestro local. Precios y vueltos calculados en vivo con la tasa oficial BCV.
             </p>
         </div>
 
-        <!-- Selector de Modalidad (Delivery vs Retiro) -->
+        <!-- Selector de Modalidad Rápida -->
         <div class="flex justify-center mb-8">
             <div class="inline-flex bg-white p-1 rounded-full border-2 border-[#141413] shadow-[3px_3px_0px_#141413]">
-                <button class="type-btn active btn-press inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-black transition-all cursor-pointer" onclick="cambiarTipoOrden('Delivery', this)">
+                <button class="type-btn active btn-press inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-black transition-all cursor-pointer" onclick="cambiarTipoOrdenRapido('Delivery', this)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="5" cy="18" r="3"/>
                         <circle cx="19" cy="18" r="3"/>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h4m-7-5h5l2-5h3m-5 0V5h-3"/>
                     </svg>
-                    <span>Delivery</span>
+                    <span>Delivery Express</span>
                 </button>
-                <button class="type-btn btn-press inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-black text-[#141413] transition-all cursor-pointer" onclick="cambiarTipoOrden('Pickup / Retiro', this)">
+                <button class="type-btn btn-press inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-black text-[#141413] transition-all cursor-pointer" onclick="cambiarTipoOrdenRapido('Pickup', this)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7M4 7l2-4h12l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 012-2h2a2 2 0 012 2v4"/>
                     </svg>
@@ -470,7 +533,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 <!-- Tarjeta 1: Local Físico -->
-                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[3px_3px_0px_#141413] flex flex-col justify-between">
+                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[4px_4px_0px_#141413] flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-2xl bg-[#F59E0B] border-2 border-[#141413] shadow-[2px_2px_0px_#141413] flex items-center justify-center mb-4">
                             <svg class="w-5 h-5 text-[#141413]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -484,12 +547,12 @@
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-[#141413]/10">
-                        <span class="text-xs font-black uppercase text-[#D9381E] tracking-wider">Estacionamiento propio</span>
+                        <span class="text-xs font-black uppercase text-[#D9381E] tracking-wider">Estacionamiento propio vigilado</span>
                     </div>
                 </div>
 
                 <!-- Tarjeta 2: Horarios -->
-                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[3px_3px_0px_#141413] flex flex-col justify-between">
+                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[4px_4px_0px_#141413] flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-2xl bg-[#D9381E] text-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] flex items-center justify-center mb-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -501,7 +564,7 @@
                         <p class="text-sm text-[#141413]/75 font-medium leading-relaxed">
                             <strong>Martes a Jueves:</strong> 12:00 PM – 10:30 PM<br>
                             <strong>Viernes y Sábados:</strong> 12:00 PM – 11:30 PM<br>
-                            <strong>Domingos:</strong> 1:00 PM – 10:00 PM
+                            <strong>Domingos:</strong> 12:00 PM – 10:00 PM
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-[#141413]/10">
@@ -510,7 +573,7 @@
                 </div>
 
                 <!-- Tarjeta 3: Cobertura Delivery -->
-                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[3px_3px_0px_#141413] flex flex-col justify-between">
+                <div class="bg-[#F6F4EF] border-2 border-[#141413] p-6 rounded-3xl shadow-[4px_4px_0px_#141413] flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-2xl bg-[#F59E0B] border-2 border-[#141413] shadow-[2px_2px_0px_#141413] flex items-center justify-center mb-4">
                             <svg class="w-5 h-5 text-[#141413]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -521,11 +584,11 @@
                         </div>
                         <h4 class="font-serif font-black text-xl text-[#141413] mb-2">Delivery Caracas</h4>
                         <p class="text-sm text-[#141413]/75 font-medium leading-relaxed">
-                            Llegamos caliente a Las Mercedes, Chacao, Altamira, Los Palos Grandes, El Rosal, Baruta, La Tahona y El Hatillo.
+                            Chacao, Altamira, Las Mercedes, Baruta, Sabana Grande, Centro y El Hatillo. Motorizados con bolso térmico y cambio en efectivo.
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-[#141413]/10">
-                        <span class="text-xs font-black uppercase text-[#25d366] tracking-wider">Despachos inmediatos</span>
+                        <span class="text-xs font-black uppercase text-[#25d366] tracking-wider">Vuelto exacto garantizado</span>
                     </div>
                 </div>
 
@@ -553,65 +616,77 @@
         </div>
     </footer>
 
-    <!-- MODAL DE PERSONALIZACIÓN DE PRODUCTO -->
-    <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="product-modal" onclick="if(event.target === this) cerrarModal()">
-        <div class="modal-card bg-[#F6F4EF] border-2 border-[#141413] shadow-[5px_5px_0px_#141413] rounded-3xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col relative">
+    <!-- MODAL DE PERSONALIZACIÓN DE PRODUCTO (EXTRAS PAGOS + REMOCIONES "SIN...") -->
+    <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4" id="product-modal" onclick="if(event.target === this) cerrarModal()">
+        <div class="modal-card bg-[#F6F4EF] border-2 border-[#141413] shadow-[6px_6px_0px_#141413] rounded-3xl w-full max-w-lg max-h-[92vh] overflow-hidden flex flex-col relative">
             
             <!-- Banner de imagen del producto -->
-            <div class="relative w-full h-48 bg-[#141413] overflow-hidden border-b-2 border-[#141413]">
+            <div class="relative w-full h-44 sm:h-48 bg-[#141413] overflow-hidden border-b-2 border-[#141413] flex-shrink-0">
                 <img id="modal-img" src="" alt="Burger" class="w-full h-full object-cover">
-                <button class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white text-[#141413] border-2 border-[#141413] shadow-[2px_2px_0px_#141413] flex items-center justify-center hover:bg-[#D9381E] hover:text-white transition-colors cursor-pointer" onclick="cerrarModal()" title="Cerrar">
+                <button class="btn-press absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white text-[#141413] border-2 border-[#141413] shadow-[2px_2px_0px_#141413] flex items-center justify-center hover:bg-[#D9381E] hover:text-white transition-colors cursor-pointer" onclick="cerrarModal()" title="Cerrar">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
             <!-- Cuerpo scrollable -->
-            <div class="p-5 overflow-y-auto flex-grow flex flex-col gap-5">
+            <div class="p-4 sm:p-5 overflow-y-auto flex-grow flex flex-col gap-4 sm:gap-5">
                 <div>
                     <h3 id="modal-title" class="font-serif font-black text-2xl text-[#141413]">Nombre del Producto</h3>
                     <p id="modal-desc" class="text-xs sm:text-sm text-[#141413]/70 font-medium mt-1 leading-relaxed">Descripción detallada</p>
                 </div>
 
-                <!-- Sección Extras -->
+                <!-- 1. Sección Extras Pagos -->
                 <div>
-                    <span class="text-xs font-black uppercase tracking-wider text-[#D9381E] block mb-2">Añadir Extras</span>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-[#D9381E] block">Extras para tu Burger</span>
+                        <span class="text-[11px] font-bold text-[#141413]/60">Suman al precio</span>
+                    </div>
                     <div class="flex flex-col gap-2" id="modal-extras"></div>
                 </div>
 
-                <!-- Sección Salsas -->
+                <!-- 2. Sección Quitar Ingredientes ("Sin...") -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-[#141413]/80 block">Quitar Ingredientes ("Sin...")</span>
+                        <span class="text-[11px] font-bold text-[#141413]/60">Toca para seleccionar</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2" id="modal-removals"></div>
+                </div>
+
+                <!-- 3. Sección Salsas -->
                 <div>
                     <span class="text-xs font-black uppercase tracking-wider text-[#F59E0B] block mb-2">Elige tu Salsa de la Casa</span>
                     <div class="flex flex-col gap-2" id="modal-sauces"></div>
                 </div>
 
-                <!-- Notas especiales -->
+                <!-- 4. Notas especiales -->
                 <div>
-                    <span class="text-xs font-black uppercase tracking-wider text-[#141413]/80 block mb-2">Instrucción Especial</span>
-                    <input type="text" id="modal-notes" class="w-full bg-white border-2 border-[#141413] rounded-xl p-3 text-sm text-[#141413] placeholder-[#141413]/40 outline-none focus:border-[#D9381E] transition-colors" placeholder="Ej: Sin pepinillos, carne bien tostada...">
+                    <span class="text-xs font-black uppercase tracking-wider text-[#141413]/80 block mb-1.5">Instrucción Especial</span>
+                    <input type="text" id="modal-notes" class="w-full bg-white border-2 border-[#141413] rounded-xl p-3 text-xs sm:text-sm text-[#141413] placeholder-[#141413]/40 outline-none focus:border-[#D9381E] transition-colors" placeholder="Ej: Carne bien tostada, empaque separado...">
                 </div>
 
-                <!-- Cantidad -->
-                <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border-2 border-[#141413] shadow-[2px_2px_0px_#141413]">
-                    <span class="text-sm font-black text-[#141413]">Cantidad:</span>
+                <!-- 5. Cantidad -->
+                <div class="flex items-center justify-between bg-white p-3 rounded-2xl border-2 border-[#141413] shadow-[2px_2px_0px_#141413]">
+                    <span class="text-xs sm:text-sm font-black text-[#141413]">Cantidad:</span>
                     <div class="flex items-center gap-3">
-                        <button class="w-8 h-8 rounded-xl bg-[#F6F4EF] border-2 border-[#141413] text-[#141413] font-black text-sm flex items-center justify-center hover:bg-[#F59E0B] transition-colors cursor-pointer" onclick="ajustarQtyModal(-1)">-</button>
+                        <button class="btn-press w-8 h-8 rounded-xl bg-[#F6F4EF] border-2 border-[#141413] text-[#141413] font-black text-sm flex items-center justify-center hover:bg-[#F59E0B] transition-colors cursor-pointer" onclick="ajustarQtyModal(-1)">-</button>
                         <span id="modal-qty-val" class="font-serif font-black text-base text-[#141413] min-w-[20px] text-center">1</span>
-                        <button class="w-8 h-8 rounded-xl bg-[#F6F4EF] border-2 border-[#141413] text-[#141413] font-black text-sm flex items-center justify-center hover:bg-[#F59E0B] transition-colors cursor-pointer" onclick="ajustarQtyModal(1)">+</button>
+                        <button class="btn-press w-8 h-8 rounded-xl bg-[#F6F4EF] border-2 border-[#141413] text-[#141413] font-black text-sm flex items-center justify-center hover:bg-[#F59E0B] transition-colors cursor-pointer" onclick="ajustarQtyModal(1)">+</button>
                     </div>
                 </div>
             </div>
 
             <!-- Footer del modal con total y botón confirmar -->
-            <div class="p-4 sm:p-5 border-t-2 border-[#141413] bg-white flex items-center justify-between gap-4 sticky bottom-0">
+            <div class="p-3 sm:p-5 border-t-2 border-[#141413] bg-white flex items-center justify-between gap-3 sm:gap-4 sticky bottom-0">
                 <div>
-                    <span class="text-[11px] font-extrabold uppercase text-[#141413]/60 block">Total Producto</span>
-                    <div class="flex items-baseline gap-2">
-                        <span id="modal-total-usd" class="font-serif font-black text-2xl text-[#D9381E]">$0.00</span>
-                        <small id="modal-total-bs" class="text-xs font-bold text-[#141413]/70">0.00 Bs</small>
+                    <span class="text-[10px] font-extrabold uppercase text-[#141413]/60 block">Precio Total</span>
+                    <div class="flex items-baseline gap-1.5">
+                        <span id="modal-total-usd" class="font-serif font-black text-xl sm:text-2xl text-[#D9381E]">$0.00</span>
+                        <small id="modal-total-bs" class="text-xs font-bold text-[#141413]/70 hidden xs:inline">0.00 Bs</small>
                     </div>
                 </div>
-                <button class="btn-press flex-1 py-3.5 px-5 rounded-2xl bg-[#D9381E] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-sm uppercase tracking-wider hover:bg-[#F59E0B] hover:text-[#141413] transition-colors cursor-pointer" onclick="confirmarAgregarAlPedido()">
-                    Agregar al Pedido
+                <button class="btn-press flex-1 py-3 sm:py-3.5 px-4 rounded-2xl bg-[#D9381E] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-[#F59E0B] hover:text-[#141413] transition-colors cursor-pointer" onclick="confirmarAgregarAlPedido()">
+                    <span id="modal-btn-confirm-text">Agregar al Pedido</span>
                 </button>
             </div>
 
@@ -619,7 +694,7 @@
     </div>
 
     <!-- 5. BARRA FLOTANTE FIJA INFERIOR (MÓVIL / ACTIVE STATE) -->
-    <div id="cart-bar" class="fixed bottom-4 left-4 right-4 z-40 max-w-lg mx-auto bg-[#141413] text-white p-3.5 rounded-2xl border-2 border-[#141413] shadow-[4px_4px_0px_#D9381E] flex items-center justify-between cursor-pointer transform transition-transform duration-300 translate-y-28 pointer-events-none" onclick="abrirDrawer()">
+    <div id="cart-bar" class="fixed bottom-4 left-3 right-3 z-40 max-w-lg mx-auto bg-[#141413] text-white p-3.5 rounded-2xl border-2 border-[#141413] shadow-[4px_4px_0px_#D9381E] flex items-center justify-between cursor-pointer transform transition-transform duration-300 translate-y-32 pointer-events-none" onclick="abrirDrawer()">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-[#F59E0B] text-[#141413] flex items-center justify-center font-black text-sm border-2 border-[#141413]">
                 <span id="cart-count">0</span>
@@ -640,68 +715,173 @@
         </div>
     </div>
 
-    <!-- 6. DRAWER / COMANDA LATERAL -->
+    <!-- 6. CHECKOUT INTELIGENTE EN EL DRAWER DEL CARRITO -->
     <div class="drawer-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-end" id="drawer-overlay" onclick="if(event.target === this) cerrarDrawer()">
         <div class="drawer-sheet bg-[#F6F4EF] w-full max-w-md h-full border-l-2 border-[#141413] shadow-2xl flex flex-col justify-between">
             
-            <!-- Header del Drawer -->
-            <div class="p-5 border-b-2 border-[#141413] flex items-center justify-between bg-white">
+            <!-- Header del Drawer con Orden ID aleatoria -->
+            <div class="p-4 sm:p-5 border-b-2 border-[#141413] flex items-center justify-between bg-white flex-shrink-0">
                 <div class="flex items-center gap-2">
                     <span class="w-3 h-3 rounded-full bg-[#D9381E] border border-[#141413]"></span>
-                    <h3 class="font-serif font-black text-xl text-[#141413] uppercase tracking-wide">Tu Comanda</h3>
+                    <div>
+                        <h3 class="font-serif font-black text-lg sm:text-xl text-[#141413] uppercase tracking-wide leading-tight">Tu Comanda</h3>
+                        <span id="order-id-badge" class="text-[11px] font-black text-[#D9381E] bg-[#D9381E]/10 px-2 py-0.5 rounded border border-[#D9381E]/30">#B55-4821</span>
+                    </div>
                 </div>
-                <button class="w-8 h-8 rounded-full bg-[#F6F4EF] border-2 border-[#141413] shadow-[1px_1px_0px_#141413] text-[#141413] flex items-center justify-center hover:bg-[#D9381E] hover:text-white transition-colors cursor-pointer" onclick="cerrarDrawer()" title="Cerrar comanda">
+                <button class="btn-press w-8 h-8 rounded-full bg-[#F6F4EF] border-2 border-[#141413] shadow-[1px_1px_0px_#141413] text-[#141413] flex items-center justify-center hover:bg-[#D9381E] hover:text-white transition-colors cursor-pointer" onclick="cerrarDrawer()" title="Cerrar comanda">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
             <!-- Lista de items del carrito -->
-            <div class="p-5 flex-grow overflow-y-auto flex flex-col gap-3" id="cart-items-list"></div>
+            <div class="p-4 sm:p-5 flex-grow overflow-y-auto flex flex-col gap-3" id="cart-items-list"></div>
 
-            <!-- Selección de Método de Pago y Footer -->
-            <div class="p-5 bg-white border-t-2 border-[#141413] flex flex-col gap-4">
+            <!-- Configuración de Entrega, Pago, Vuelto y Checkout -->
+            <div class="p-4 sm:p-5 bg-white border-t-2 border-[#141413] flex flex-col gap-3.5 max-h-[58vh] overflow-y-auto flex-shrink-0">
                 
+                <!-- 1. Selector de Modalidad: Pick-up vs Delivery Caracas -->
                 <div>
-                    <span class="text-xs font-black uppercase text-[#141413]/70 tracking-wider block mb-2">Método de Pago:</span>
+                    <span class="text-xs font-black uppercase text-[#141413]/70 tracking-wider block mb-1.5">Tipo de Entrega:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" id="delivery-tab-pickup" class="delivery-mode-btn btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer" onclick="seleccionarModalidadEntrega('Pickup')">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7M4 7l2-4h12l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 012-2h2a2 2 0 012 2v4"/>
+                            </svg>
+                            <span>Pick-up (Gratis)</span>
+                        </button>
+                        <button type="button" id="delivery-tab-delivery" class="delivery-mode-btn active btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer" onclick="seleccionarModalidadEntrega('Delivery')">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="5" cy="18" r="3"/>
+                                <circle cx="19" cy="18" r="3"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h4m-7-5h5l2-5h3m-5 0V5h-3"/>
+                            </svg>
+                            <span>Delivery Caracas</span>
+                        </button>
+                    </div>
+
+                    <!-- Cuadro de Zona y Dirección de Delivery -->
+                    <div id="delivery-zone-box" class="flex flex-col gap-2 mt-2 p-3 bg-[#F6F4EF] border-2 border-[#141413] rounded-2xl">
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-[#141413]/70 block mb-1">Zona de Caracas y Tarifa:</label>
+                            <select id="delivery-zone-select" onchange="cambiarZonaDelivery()" class="w-full bg-white border-2 border-[#141413] rounded-xl p-2 text-xs font-black text-[#141413] outline-none cursor-pointer">
+                                <option value="2.00" data-zona="Chacao / Altamira">Chacao / Altamira (+$2.00)</option>
+                                <option value="2.50" data-zona="Las Mercedes / Baruta" selected>Las Mercedes / Baruta (+$2.50)</option>
+                                <option value="3.00" data-zona="Sabana Grande / Centro">Sabana Grande / Centro (+$3.00)</option>
+                                <option value="4.00" data-zona="El Hatillo">El Hatillo (+$4.00)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black uppercase text-[#141413]/70 block mb-1">Dirección / Punto de Referencia:</label>
+                            <input type="text" id="delivery-address-input" oninput="actualizarTicketWA()" placeholder="Ej: Calle París, Res. Ávila, Apto 4B..." class="w-full bg-white border-2 border-[#141413] rounded-xl p-2 text-xs font-medium text-[#141413] placeholder-[#141413]/40 outline-none focus:border-[#D9381E]">
+                        </div>
+                    </div>
+
+                    <!-- Aviso de Retiro en Tienda -->
+                    <div id="pickup-info-box" class="hidden mt-2 p-3 bg-amber-50 border-2 border-[#141413] rounded-2xl text-xs text-[#141413]">
+                        <div class="font-black flex items-center gap-1.5 text-amber-900 mb-0.5">
+                            <svg class="w-4 h-4 text-amber-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                            <span>Retiro en Local Burger 55</span>
+                        </div>
+                        <p class="text-[11px] text-[#141413]/75 font-medium">Av. Principal de Las Mercedes. Tu pedido estará listo en 20-25 min.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Método de Pago: Pago Móvil, Efectivo Divisas, Zelle / Binance -->
+                <div>
+                    <span class="text-xs font-black uppercase text-[#141413]/70 tracking-wider block mb-1.5">Método de Pago:</span>
                     <div class="grid grid-cols-3 gap-2">
                         <button class="pay-btn active btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black flex flex-col items-center justify-center gap-1 cursor-pointer transition-all" onclick="cambiarMetodoPago('Pago Móvil (BCV)', this)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
                                 <line x1="12" y1="18" x2="12.01" y2="18" stroke-linecap="round"/>
                             </svg>
-                            <span class="text-[11px]">Pago Móvil</span>
+                            <span class="text-[10px] leading-tight">Pago Móvil</span>
                         </button>
-                        <button class="pay-btn btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black text-[#141413] flex flex-col items-center justify-center gap-1 cursor-pointer transition-all" onclick="cambiarMetodoPago('Binance / USDT', this)">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L6.5 7.5l2.12 2.12L12 6.24l3.38 3.38 2.12-2.12L12 2zm-5.5 8.5L4.38 12 6.5 14.12 8.62 12 6.5 10.5zm11 0L15.38 12l2.12 2.12L19.62 12 17.5 10.5zM12 10.5L9.5 13l2.5 2.5 2.5-2.5L12 10.5zm0 7.26l-3.38-3.38-2.12 2.12L12 22l5.5-5.5-2.12-2.12L12 17.76z"/>
-                            </svg>
-                            <span class="text-[11px]">Binance</span>
-                        </button>
-                        <button class="pay-btn btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black text-[#141413] flex flex-col items-center justify-center gap-1 cursor-pointer transition-all" onclick="cambiarMetodoPago('Efectivo Divisas', this)">
+                        <button class="pay-btn btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black text-[#141413] flex flex-col items-center justify-center gap-1 cursor-pointer transition-all" onclick="cambiarMetodoPago('Efectivo Divisas ($)', this)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <rect x="2" y="6" width="20" height="12" rx="2"/>
                                 <circle cx="12" cy="12" r="2.5"/>
                                 <path d="M6 12h.01M18 12h.01"/>
                             </svg>
-                            <span class="text-[11px]">Efectivo</span>
+                            <span class="text-[10px] leading-tight">Efectivo ($)</span>
+                        </button>
+                        <button class="pay-btn btn-press p-2 rounded-xl border-2 border-[#141413] text-xs font-black text-[#141413] flex flex-col items-center justify-center gap-1 cursor-pointer transition-all" onclick="cambiarMetodoPago('Zelle / Binance', this)">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L6.5 7.5l2.12 2.12L12 6.24l3.38 3.38 2.12-2.12L12 2zm-5.5 8.5L4.38 12 6.5 14.12 8.62 12 6.5 10.5zm11 0L15.38 12l2.12 2.12L19.62 12 17.5 10.5zM12 10.5L9.5 13l2.5 2.5 2.5-2.5L12 10.5zm0 7.26l-3.38-3.38-2.12 2.12L12 22l5.5-5.5-2.12-2.12L12 17.76z"/>
+                            </svg>
+                            <span class="text-[10px] leading-tight">Zelle/Binance</span>
                         </button>
                     </div>
+
+                    <!-- Calculadora de vuelto para Efectivo Divisas -->
+                    <div id="cash-change-calculator" class="hidden p-3 bg-[#F6F4EF] border-2 border-[#141413] rounded-2xl flex flex-col gap-2 mt-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black uppercase text-[#141413]">¿Con qué billete pagas?</span>
+                            <span class="text-[11px] font-bold text-[#D9381E]">Vuelto exacto</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="relative flex-1">
+                                <span class="absolute left-3 top-2 text-xs font-black text-[#141413]">$</span>
+                                <input type="number" id="cash-bill-input" min="1" step="1" placeholder="Ej: 20, 50" oninput="calcularVuelto()" class="w-full bg-white border-2 border-[#141413] rounded-xl py-1.5 pl-6 pr-2 text-xs font-black text-[#141413] outline-none focus:border-[#D9381E]">
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button type="button" onclick="setBillete(10)" class="btn-press px-2 py-1 bg-white border-2 border-[#141413] rounded-lg text-xs font-black hover:bg-[#F59E0B] transition-colors cursor-pointer">$10</button>
+                                <button type="button" onclick="setBillete(20)" class="btn-press px-2 py-1 bg-white border-2 border-[#141413] rounded-lg text-xs font-black hover:bg-[#F59E0B] transition-colors cursor-pointer">$20</button>
+                                <button type="button" onclick="setBillete(50)" class="btn-press px-2 py-1 bg-white border-2 border-[#141413] rounded-lg text-xs font-black hover:bg-[#F59E0B] transition-colors cursor-pointer">$50</button>
+                            </div>
+                        </div>
+                        <div id="change-result-box" class="text-xs font-black p-2 rounded-xl bg-white border border-[#141413]/20 text-[#141413]">
+                            Ingresa el monto del billete para calcular el vuelto.
+                        </div>
+                    </div>
+
+                    <!-- Datos de Pago Móvil -->
+                    <div id="pago-movil-info" class="p-3 bg-[#F6F4EF] border-2 border-[#141413] rounded-2xl flex flex-col gap-1 mt-2 text-xs">
+                        <span class="font-black text-[#141413]">Datos para Pago Móvil (Tasa Oficial BCV):</span>
+                        <div class="flex justify-between text-[11px] text-[#141413]/80">
+                            <span>Banesco (0134)</span>
+                            <span class="font-black text-[#141413]">0424-1234567</span>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-[#141413]/80">
+                            <span>C.I. / RIF: J-50123456-7</span>
+                            <span class="font-black text-[#D9381E]" id="pm-total-bs">Bs. ...</span>
+                        </div>
+                    </div>
+
+                    <!-- Datos de Zelle / Binance -->
+                    <div id="zelle-binance-info" class="hidden p-3 bg-[#F6F4EF] border-2 border-[#141413] rounded-2xl flex flex-col gap-1 mt-2 text-xs">
+                        <span class="font-black text-[#141413]">Datos de Transferencia Digital:</span>
+                        <div class="text-[11px] text-[#141413]/80">
+                            <div><strong>Zelle:</strong> pagos@burger55.com (Burger 55 CCS)</div>
+                            <div><strong>Binance Pay ID:</strong> 294819231 (Burger55Pay)</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Desglose de Totales -->
-                <div class="flex items-baseline justify-between pt-2 border-t border-[#141413]/10">
-                    <div>
-                        <span class="text-xs font-black uppercase text-[#141413]/60 block">Total a pagar:</span>
-                        <div class="text-[11px] text-[#141413]/50 font-semibold" id="drawer-tax-info">Calculado a tasa oficial BCV</div>
+                <!-- 3. Desglose Detallado de Totales -->
+                <div class="pt-2 border-t-2 border-[#141413]/10 flex flex-col gap-1 text-xs">
+                    <div class="flex justify-between text-[#141413]/70 font-semibold">
+                        <span>Subtotal Comida:</span>
+                        <span id="drawer-subtotal-food" class="font-bold text-[#141413]">$0.00</span>
                     </div>
-                    <div class="text-right">
-                        <strong id="drawer-total-usd" class="font-serif font-black text-2xl text-[#D9381E] block">$0.00</strong>
-                        <div id="drawer-total-bs" class="text-xs font-black text-[#141413]">0.00 Bs</div>
+                    <div class="flex justify-between text-[#141413]/70 font-semibold">
+                        <span>Tarifa de Delivery:</span>
+                        <span id="drawer-delivery-fee" class="font-bold text-[#141413]">$2.50</span>
+                    </div>
+                    <div class="flex items-baseline justify-between pt-1 border-t border-[#141413]/10">
+                        <div>
+                            <span class="text-xs font-black uppercase text-[#141413] block">Total a Pagar:</span>
+                            <div class="text-[10px] text-[#141413]/50 font-semibold" id="drawer-tax-info">A tasa oficial BCV del día</div>
+                        </div>
+                        <div class="text-right">
+                            <strong id="drawer-total-usd" class="font-serif font-black text-2xl text-[#D9381E] block">$0.00</strong>
+                            <div id="drawer-total-bs" class="text-xs font-black text-[#141413]">0.00 Bs</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Botón de Envío a WhatsApp -->
-                <a href="#" id="wa-checkout-link" target="_blank" class="btn-press w-full py-4 px-6 rounded-2xl bg-[#25D366] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-3 hover:bg-[#20bd5a] transition-colors cursor-pointer">
+                <!-- 4. Botón de Envío de Ticket a WhatsApp -->
+                <a href="#" id="wa-checkout-link" target="_blank" class="btn-press w-full py-3.5 px-5 rounded-2xl bg-[#25D366] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 hover:bg-[#20bd5a] transition-colors cursor-pointer">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
@@ -720,13 +900,38 @@
             tasaBackup: 866.56
         };
 
+        const ZONAS_DELIVERY = [
+            { id: "chacao", nombre: "Chacao / Altamira", costo: 2.00 },
+            { id: "baruta", nombre: "Las Mercedes / Baruta", costo: 2.50 },
+            { id: "centro", nombre: "Sabana Grande / Centro", costo: 3.00 },
+            { id: "hatillo", nombre: "El Hatillo", costo: 4.00 }
+        ];
+
+        const EXTRAS_DEFAULT = [
+            { id: "extra-tocineta", nombre: "Tocineta crujiente", precio: 1.50 },
+            { id: "extra-cheddar", nombre: "Extra Queso Cheddar", precio: 1.00 },
+            { id: "extra-cebolla", nombre: "Cebolla caramelizada", precio: 0.80 },
+            { id: "extra-carne", nombre: "Carne Smash extra (90g)", precio: 2.50 }
+        ];
+
+        const REMOCIONES_DEFAULT = [
+            { id: "sin-cebolla", label: "Sin cebolla" },
+            { id: "sin-pepinillos", label: "Sin pepinillos" },
+            { id: "sin-salsas", label: "Sin salsas" },
+            { id: "salsa-aparte", label: "Salsa aparte" }
+        ];
+
         let tasaOficial = CONFIG.tasaBackup;
-        let tipoEntrega = "Delivery";
+        let modalidadEntrega = "Delivery"; // "Delivery" o "Pickup"
+        let zonaDeliverySeleccionada = ZONAS_DELIVERY[1]; // default Baruta $2.50
         let metodoPago = "Pago Móvil (BCV)";
+        let billetePagoDivisas = 0;
         let carrito = [];
         let productoActivo = null;
         let cantidadModal = 1;
         let categoriaActual = 'todos';
+        let remocionesSeleccionadas = new Set();
+        let orderNumber = "#B55-" + Math.floor(1000 + Math.random() * 9000);
 
         const MENU = [
             {
@@ -737,11 +942,7 @@
                 precioUSD: 8.50,
                 desc: "Doble carne smashed de 90g con costra crocante, doble cheddar fundido, pepinillos y salsa 55 en pan brioche tostado.",
                 img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
-                extras: [
-                    { nombre: "Extra Tocineta Ahumada", precio: 1.50 },
-                    { nombre: "Extra Queso Cheddar", precio: 1.00 },
-                    { nombre: "Carne Smash Adicional (90g)", precio: 2.00 }
-                ],
+                extras: EXTRAS_DEFAULT,
                 salsas: ["Salsa 55 (Casa)", "BBQ Ahumada", "Mayo Ajo", "Sin Salsa"]
             },
             {
@@ -752,11 +953,7 @@
                 precioUSD: 11.00,
                 desc: "Doble carne, mermelada de tocineta ahumada artesanal, cebolla crispy y salsa BBQ especial de la casa.",
                 img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&auto=format&fit=crop&q=80",
-                extras: [
-                    { nombre: "Extra Mermelada Bacon", precio: 1.50 },
-                    { nombre: "Doble Cebolla Crispy", precio: 0.80 },
-                    { nombre: "Extra Cheddar Líquido", precio: 1.20 }
-                ],
+                extras: EXTRAS_DEFAULT,
                 salsas: ["BBQ Especial", "Salsa 55", "Mayo Trufada", "Sin Salsa"]
             },
             {
@@ -767,10 +964,7 @@
                 precioUSD: 19.50,
                 desc: "2x 55 Original Smash + Ración generosa de papas rústicas + 2 refrescos de lata bien fríos.",
                 img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80",
-                extras: [
-                    { nombre: "Mejorar a Papas Loaded con Cheddar", precio: 2.50 },
-                    { nombre: "Extra Tocineta en ambas", precio: 2.50 }
-                ],
+                extras: EXTRAS_DEFAULT,
                 salsas: ["Salsa 55 + BBQ", "2x Salsa 55", "Mayo Ajo + Tártara"]
             },
             {
@@ -782,21 +976,64 @@
                 desc: "Papas fritas rústicas con queso cheddar líquido caliente, tocineta crocante y cebollín fresco.",
                 img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80",
                 extras: [
-                    { nombre: "Extra Tocineta Picada", precio: 1.00 },
-                    { nombre: "Doble Queso Cheddar", precio: 1.20 },
-                    { nombre: "Topping Jalapeños", precio: 0.80 }
+                    { id: "extra-tocineta", nombre: "Extra Tocineta Picada", precio: 1.00 },
+                    { id: "extra-cheddar", nombre: "Doble Queso Cheddar", precio: 1.20 },
+                    { id: "extra-jalapenos", nombre: "Topping Jalapeños", precio: 0.80 }
                 ],
                 salsas: ["Cheddar Fundido Extra", "Salsa 55 Aparte", "BBQ Ahumada"]
             }
         ];
 
         document.addEventListener("DOMContentLoaded", async () => {
+            actualizarEstadoLocal();
+            // Actualizar estado cada 60 segundos
+            setInterval(actualizarEstadoLocal, 60000);
             await sincronizarTasaBCV();
             renderizarCards('todos');
         });
 
+        /* BANNER DINÁMICO DE HORARIOS / ESTADO DEL LOCAL */
+        function actualizarEstadoLocal() {
+            const ahora = new Date();
+            const horaDecimal = ahora.getHours() + ahora.getMinutes() / 60;
+            // Abierto de 12:00 PM (12.0) a 11:30 PM (23.5)
+            const estaAbierto = (horaDecimal >= 12.0 && horaDecimal < 23.5);
+
+            const statusDots = document.querySelectorAll(".store-status-dot");
+            const statusTexts = document.querySelectorAll(".store-status-text");
+            const statusBadges = document.querySelectorAll(".store-status-badge");
+
+            statusDots.forEach(dot => {
+                dot.className = estaAbierto
+                    ? "store-status-dot w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+                    : "store-status-dot w-2 h-2 rounded-full bg-[#F59E0B]";
+            });
+
+            statusTexts.forEach(txt => {
+                txt.textContent = estaAbierto
+                    ? "Abierto ahora • Cocina activa"
+                    : "Abierto hoy desde las 12:00 PM • Agenda tu pedido";
+                if (!estaAbierto) {
+                    txt.classList.remove("text-emerald-400");
+                    txt.classList.add("text-[#F59E0B]");
+                } else {
+                    txt.classList.remove("text-[#F59E0B]");
+                    txt.classList.add("text-emerald-400");
+                }
+            });
+
+            statusBadges.forEach(badge => {
+                if (estaAbierto) {
+                    badge.className = "hidden lg:inline-flex store-status-badge items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border-2 border-[#141413] shadow-[2px_2px_0px_#141413] text-xs font-black";
+                } else {
+                    badge.className = "hidden lg:inline-flex store-status-badge items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-900 border-2 border-[#141413] shadow-[2px_2px_0px_#141413] text-xs font-black";
+                }
+            });
+        }
+
         async function sincronizarTasaBCV() {
-            const badge = document.getElementById("bcv-text");
+            const badgeNav = document.getElementById("bcv-text");
+            const badgeTop = document.getElementById("bcv-text-top");
             try {
                 const res = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
                 if (res.ok) {
@@ -810,7 +1047,8 @@
             }
 
             const formattedRate = `Bs. ${tasaOficial.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            if (badge) badge.textContent = formattedRate;
+            if (badgeNav) badgeNav.textContent = formattedRate;
+            if (badgeTop) badgeTop.textContent = formattedRate;
 
             // Actualizar precios dinámicos en las Hero Cards
             const heroClassic = document.getElementById("hero-bs-b55-classic");
@@ -847,30 +1085,35 @@
                             ${p.tag}
                         </div>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow justify-between">
+                    <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
                         <div>
                             <h3 class="font-serif font-black text-xl sm:text-2xl text-[#141413] cursor-pointer hover:text-[#D9381E] transition-colors mb-2" onclick="abrirModalPersonalizacion('${p.id}')">
                                 ${p.nombre}
                             </h3>
-                            <p class="text-sm text-[#141413]/75 leading-relaxed mb-6 font-medium">
+                            <p class="text-xs sm:text-sm text-[#141413]/75 leading-relaxed mb-6 font-medium">
                                 ${p.desc}
                             </p>
                         </div>
                         <div>
                             <div class="flex items-end justify-between py-3 mb-4 border-t-2 border-dashed border-[#141413]/15">
                                 <div>
-                                    <span class="text-xs uppercase font-extrabold text-[#141413]/60 block">Precio</span>
+                                    <span class="text-[11px] uppercase font-extrabold text-[#141413]/60 block">Precio Base</span>
                                     <div class="font-serif font-black text-2xl text-[#D9381E]">$${p.precioUSD.toFixed(2)}</div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs uppercase font-extrabold text-[#141413]/60 block">Tasa BCV</span>
-                                    <div class="text-sm font-black text-[#141413]">Bs. ${bsPrecio}</div>
+                                    <span class="text-[11px] uppercase font-extrabold text-[#141413]/60 block">Tasa BCV</span>
+                                    <div class="text-xs sm:text-sm font-black text-[#141413]">Bs. ${bsPrecio}</div>
                                 </div>
                             </div>
-                            <button class="btn-press w-full py-3.5 px-4 rounded-2xl bg-[#F6F4EF] text-[#141413] border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-sm uppercase tracking-wider hover:bg-[#D9381E] hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer" onclick="abrirModalPersonalizacion('${p.id}')">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                                <span>Personalizar y Agregar</span>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <button class="btn-press flex-1 py-3 px-4 rounded-2xl bg-[#F6F4EF] text-[#141413] border-2 border-[#141413] shadow-[3px_3px_0px_#141413] font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-[#D9381E] hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer" onclick="abrirModalPersonalizacion('${p.id}')">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg>
+                                    <span>Personalizar</span>
+                                </button>
+                                <button class="btn-press w-11 h-11 rounded-2xl bg-[#D9381E] text-white border-2 border-[#141413] shadow-[3px_3px_0px_#141413] flex items-center justify-center hover:bg-[#F59E0B] hover:text-[#141413] cursor-pointer flex-shrink-0" onclick="agregarDirectoMenu('${p.id}')" title="Agregar rápido estándar">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -890,26 +1133,19 @@
             renderizarCards(categoria);
         }
 
-        function cambiarTipoOrden(tipo, btn) {
-            tipoEntrega = tipo;
+        function cambiarTipoOrdenRapido(tipo, btn) {
             document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
             if (btn) btn.classList.add("active");
-            actualizarDrawerYMensaje();
+            seleccionarModalidadEntrega(tipo);
         }
 
-        function cambiarMetodoPago(metodo, btn) {
-            metodoPago = metodo;
-            document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
-            if (btn) btn.classList.add("active");
-            actualizarDrawerYMensaje();
-        }
-
-        /* MODAL POP-UP PERSONALIZAR PRODUCTO */
+        /* MODAL POP-UP PERSONALIZAR PRODUCTO (EXTRAS PAGOS + REMOCIONES) */
         function abrirModalPersonalizacion(id) {
             const prod = MENU.find(m => m.id === id);
             if (!prod) return;
             productoActivo = prod;
             cantidadModal = 1;
+            remocionesSeleccionadas.clear();
 
             document.getElementById("modal-img").src = prod.img;
             document.getElementById("modal-title").textContent = prod.nombre;
@@ -917,6 +1153,7 @@
             document.getElementById("modal-notes").value = "";
             document.getElementById("modal-qty-val").textContent = "1";
 
+            // Renderizar extras pagos
             const extrasContainer = document.getElementById("modal-extras");
             extrasContainer.innerHTML = "";
             prod.extras.forEach((ext, idx) => {
@@ -926,24 +1163,45 @@
                 label.innerHTML = `
                     <div class="flex items-center gap-3">
                         <input type="checkbox" name="modal-extra" value="${idx}" onchange="calcularTotalModal()" class="w-5 h-5 accent-[#D9381E] rounded cursor-pointer">
-                        <span class="text-sm font-bold text-[#141413]">${ext.nombre}</span>
+                        <span class="text-xs sm:text-sm font-bold text-[#141413]">${ext.nombre}</span>
                     </div>
-                    <span class="text-xs font-black text-[#D9381E]">+$${ext.precio.toFixed(2)} (${extBs} Bs)</span>
+                    <span class="text-xs font-black text-[#D9381E]">+$${ext.precio.toFixed(2)} <small class="text-neutral-500 font-bold">(${extBs} Bs)</small></span>
                 `;
                 extrasContainer.appendChild(label);
             });
 
+            // Renderizar remociones ("Sin...")
+            const removalsContainer = document.getElementById("modal-removals");
+            removalsContainer.innerHTML = "";
+            REMOCIONES_DEFAULT.forEach(rem => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "removal-pill btn-press px-3 py-1.5 rounded-full border-2 border-[#141413] bg-white text-xs font-black text-[#141413] cursor-pointer";
+                btn.textContent = rem.label;
+                btn.onclick = () => {
+                    if (remocionesSeleccionadas.has(rem.label)) {
+                        remocionesSeleccionadas.delete(rem.label);
+                        btn.classList.remove("active");
+                    } else {
+                        remocionesSeleccionadas.add(rem.label);
+                        btn.classList.add("active");
+                    }
+                };
+                removalsContainer.appendChild(btn);
+            });
+
+            // Renderizar salsas
             const saucesContainer = document.getElementById("modal-sauces");
             saucesContainer.innerHTML = "";
             prod.salsas.forEach((salsa, idx) => {
                 const label = document.createElement("label");
-                label.className = "flex items-center justify-between p-3 rounded-xl bg-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] cursor-pointer hover:bg-neutral-50 transition-colors";
+                label.className = "flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-white border-2 border-[#141413] shadow-[2px_2px_0px_#141413] cursor-pointer hover:bg-neutral-50 transition-colors";
                 label.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <input type="radio" name="modal-sauce" value="${salsa}" ${idx === 0 ? 'checked' : ''} class="w-5 h-5 accent-[#D9381E] cursor-pointer">
-                        <span class="text-sm font-bold text-[#141413]">${salsa}</span>
+                        <input type="radio" name="modal-sauce" value="${salsa}" ${idx === 0 ? 'checked' : ''} class="w-4 h-4 sm:w-5 sm:h-5 accent-[#D9381E] cursor-pointer">
+                        <span class="text-xs sm:text-sm font-bold text-[#141413]">${salsa}</span>
                     </div>
-                    <span class="text-xs font-bold text-[#141413]/60">Incluida</span>
+                    <span class="text-[11px] font-bold text-[#141413]/60">Incluida</span>
                 `;
                 saucesContainer.appendChild(label);
             });
@@ -972,6 +1230,11 @@
 
             document.getElementById("modal-total-usd").textContent = `$${totalFinalUSD.toFixed(2)}`;
             document.getElementById("modal-total-bs").textContent = `${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs`;
+            
+            const btnConfirm = document.getElementById("modal-btn-confirm-text");
+            if (btnConfirm) {
+                btnConfirm.textContent = `Agregar al Pedido • $${totalFinalUSD.toFixed(2)}`;
+            }
         }
 
         function cerrarModal() {
@@ -1000,7 +1263,9 @@
                 idOriginal: productoActivo.id,
                 nombre: productoActivo.nombre,
                 precioUnitario: productoActivo.precioUSD + costoExtras,
+                precioBase: productoActivo.precioUSD,
                 extras: extrasSeleccionados,
+                sinIngredientes: Array.from(remocionesSeleccionadas),
                 salsa: salsaSeleccionada,
                 nota: nota,
                 cantidad: cantidadModal
@@ -1012,7 +1277,7 @@
             mostrarToastFeedback(`¡${nombreAgregado} agregado al pedido!`);
         }
 
-        /* SUMAR DIRECTO DESDE HERO CARDS */
+        /* SUMAR DIRECTO ESTÁNDAR DESDE CARDS (1 TOQUE) */
         function agregarDirectoHero(id) {
             const prod = MENU.find(m => m.id === id);
             if (!prod) return;
@@ -1021,13 +1286,19 @@
                 idOriginal: prod.id,
                 nombre: prod.nombre,
                 precioUnitario: prod.precioUSD,
+                precioBase: prod.precioUSD,
                 extras: [],
+                sinIngredientes: [],
                 salsa: prod.salsas && prod.salsas.length > 0 ? prod.salsas[0] : "Salsa 55 (Casa)",
                 nota: "",
                 cantidad: 1
             });
             actualizarDrawerYMensaje();
-            mostrarToastFeedback(`¡${prod.nombre} agregado al pedido!`);
+            mostrarToastFeedback(`¡${prod.nombre} agregado!`);
+        }
+
+        function agregarDirectoMenu(id) {
+            agregarDirectoHero(id);
         }
 
         function modificarCantidadItem(idUnico, delta) {
@@ -1041,6 +1312,117 @@
             actualizarDrawerYMensaje();
         }
 
+        /* CHECKOUT INTELIGENTE: MODALIDAD DE ENTREGA */
+        function seleccionarModalidadEntrega(tipo) {
+            modalidadEntrega = tipo;
+            const tabPickup = document.getElementById("delivery-tab-pickup");
+            const tabDelivery = document.getElementById("delivery-tab-delivery");
+            const zoneBox = document.getElementById("delivery-zone-box");
+            const pickupBox = document.getElementById("pickup-info-box");
+
+            if (tipo === "Pickup") {
+                if (tabPickup) tabPickup.classList.add("active");
+                if (tabDelivery) tabDelivery.classList.remove("active");
+                if (zoneBox) zoneBox.classList.add("hidden");
+                if (pickupBox) pickupBox.classList.remove("hidden");
+            } else {
+                if (tabDelivery) tabDelivery.classList.add("active");
+                if (tabPickup) tabPickup.classList.remove("active");
+                if (zoneBox) zoneBox.classList.remove("hidden");
+                if (pickupBox) pickupBox.classList.add("hidden");
+            }
+
+            actualizarDrawerYMensaje();
+        }
+
+        function cambiarZonaDelivery() {
+            const select = document.getElementById("delivery-zone-select");
+            if (!select) return;
+            const option = select.options[select.selectedIndex];
+            const costo = parseFloat(option.value);
+            const nombre = option.getAttribute("data-zona") || option.textContent;
+
+            zonaDeliverySeleccionada = {
+                id: option.value,
+                nombre: nombre,
+                costo: costo
+            };
+
+            actualizarDrawerYMensaje();
+        }
+
+        function cambiarMetodoPago(metodo, btn) {
+            metodoPago = metodo;
+            document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
+            if (btn) btn.classList.add("active");
+
+            const cashBox = document.getElementById("cash-change-calculator");
+            const pmBox = document.getElementById("pago-movil-info");
+            const zbBox = document.getElementById("zelle-binance-info");
+
+            if (metodo === "Efectivo Divisas ($)") {
+                if (cashBox) cashBox.classList.remove("hidden");
+                if (pmBox) pmBox.classList.add("hidden");
+                if (zbBox) zbBox.classList.add("hidden");
+                calcularVuelto();
+            } else if (metodo === "Pago Móvil (BCV)") {
+                if (cashBox) cashBox.classList.add("hidden");
+                if (pmBox) pmBox.classList.remove("hidden");
+                if (zbBox) zbBox.classList.add("hidden");
+            } else {
+                if (cashBox) cashBox.classList.add("hidden");
+                if (pmBox) pmBox.classList.add("hidden");
+                if (zbBox) zbBox.classList.remove("hidden");
+            }
+
+            actualizarTicketWA();
+        }
+
+        function setBillete(monto) {
+            const input = document.getElementById("cash-bill-input");
+            if (input) {
+                input.value = monto;
+                calcularVuelto();
+            }
+        }
+
+        function calcularVuelto() {
+            const input = document.getElementById("cash-bill-input");
+            const resultBox = document.getElementById("change-result-box");
+            if (!input || !resultBox) return;
+
+            const val = parseFloat(input.value);
+            billetePagoDivisas = isNaN(val) ? 0 : val;
+
+            const subtotalComidaUSD = carrito.reduce((acc, cur) => acc + (cur.precioUnitario * cur.cantidad), 0);
+            const costoDeliveryUSD = modalidadEntrega === "Delivery" ? zonaDeliverySeleccionada.costo : 0.00;
+            const totalUSD = subtotalComidaUSD + costoDeliveryUSD;
+
+            if (!billetePagoDivisas || billetePagoDivisas <= 0) {
+                resultBox.innerHTML = `<span class="text-neutral-500 font-semibold text-xs">Ingresa el monto del billete para calcular el vuelto.</span>`;
+                actualizarTicketWA();
+                return;
+            }
+
+            if (billetePagoDivisas < totalUSD) {
+                const falta = (totalUSD - billetePagoDivisas).toFixed(2);
+                const faltaBs = (falta * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                resultBox.innerHTML = `<span class="text-[#D9381E] font-black text-xs">El billete ($${billetePagoDivisas.toFixed(2)}) no cubre el total ($${totalUSD.toFixed(2)}). Faltan $${falta} (${faltaBs} Bs).</span>`;
+            } else if (Math.abs(billetePagoDivisas - totalUSD) < 0.01) {
+                resultBox.innerHTML = `<span class="text-emerald-700 font-black text-xs">Monto exacto ($${billetePagoDivisas.toFixed(2)}). No requiere vuelto.</span>`;
+            } else {
+                const vueltoUSD = (billetePagoDivisas - totalUSD).toFixed(2);
+                const vueltoBs = (vueltoUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                resultBox.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-neutral-700 font-bold text-xs">Vuelto que lleva el motorizado:</span>
+                        <span class="text-[#D9381E] font-serif font-black text-sm">$${vueltoUSD} <small class="text-neutral-600 font-sans font-bold text-[11px]">(${vueltoBs} Bs)</small></span>
+                    </div>
+                `;
+            }
+            actualizarTicketWA();
+        }
+
         function actualizarDrawerYMensaje() {
             const bar = document.getElementById("cart-bar");
             const list = document.getElementById("cart-items-list");
@@ -1048,9 +1430,14 @@
             const navCountEl = document.getElementById("nav-cart-count");
             const cartUsd = document.getElementById("cart-usd");
             const cartBs = document.getElementById("cart-bs");
+            const subtotalFoodEl = document.getElementById("drawer-subtotal-food");
+            const deliveryFeeEl = document.getElementById("drawer-delivery-fee");
             const drawerUsd = document.getElementById("drawer-total-usd");
             const drawerBs = document.getElementById("drawer-total-bs");
-            const waLink = document.getElementById("wa-checkout-link");
+            const pmTotalBs = document.getElementById("pm-total-bs");
+            const orderBadge = document.getElementById("order-id-badge");
+
+            if (orderBadge) orderBadge.textContent = orderNumber;
 
             const totalItems = carrito.reduce((acc, cur) => acc + cur.cantidad, 0);
 
@@ -1059,43 +1446,58 @@
             if (totalItems === 0) {
                 if (bar) {
                     bar.classList.remove("active");
-                    bar.classList.add("translate-y-28", "pointer-events-none");
+                    bar.classList.add("translate-y-32", "pointer-events-none");
                     bar.classList.remove("translate-y-0", "pointer-events-auto");
                 }
                 cerrarDrawer();
                 return;
             }
 
-            const totalUSD = carrito.reduce((acc, cur) => acc + (cur.precioUnitario * cur.cantidad), 0);
-            const totalBs = totalUSD * tasaOficial;
+            const subtotalComidaUSD = carrito.reduce((acc, cur) => acc + (cur.precioUnitario * cur.cantidad), 0);
+            const costoDeliveryUSD = modalidadEntrega === "Delivery" ? zonaDeliverySeleccionada.costo : 0.00;
+            const totalFinalUSD = subtotalComidaUSD + costoDeliveryUSD;
+            const totalFinalBs = totalFinalUSD * tasaOficial;
 
             if (countEl) countEl.textContent = `${totalItems} ${totalItems === 1 ? 'ítem' : 'ítems'}`;
-            if (cartUsd) cartUsd.textContent = `$${totalUSD.toFixed(2)}`;
-            if (cartBs) cartBs.textContent = `(${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)`;
+            if (cartUsd) cartUsd.textContent = `$${totalFinalUSD.toFixed(2)}`;
+            if (cartBs) cartBs.textContent = `(${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)`;
             
-            if (drawerUsd) drawerUsd.textContent = `$${totalUSD.toFixed(2)}`;
-            if (drawerBs) drawerBs.textContent = `Bs. ${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (subtotalFoodEl) subtotalFoodEl.textContent = `$${subtotalComidaUSD.toFixed(2)}`;
+            if (deliveryFeeEl) {
+                deliveryFeeEl.textContent = modalidadEntrega === "Delivery"
+                    ? `+$${costoDeliveryUSD.toFixed(2)} (${zonaDeliverySeleccionada.nombre})`
+                    : "Gratis ($0.00)";
+            }
+
+            if (drawerUsd) drawerUsd.textContent = `$${totalFinalUSD.toFixed(2)}`;
+            if (drawerBs) drawerBs.textContent = `Bs. ${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (pmTotalBs) pmTotalBs.textContent = `Bs. ${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
             if (list) {
                 list.innerHTML = "";
                 carrito.forEach(item => {
                     const subtotal = item.precioUnitario * item.cantidad;
-                    let detalleExtras = "";
-                    if (item.extras.length > 0) {
-                        detalleExtras += `Extras: ${item.extras.join(", ")} | `;
+                    let detalles = [];
+                    if (item.extras && item.extras.length > 0) {
+                        detalles.push(`<strong>Extras:</strong> ${item.extras.join(", ")}`);
                     }
-                    detalleExtras += `Salsa: ${item.salsa}`;
+                    if (item.sinIngredientes && item.sinIngredientes.length > 0) {
+                        detalles.push(`<span class="text-[#D9381E] font-bold">Sin:</span> ${item.sinIngredientes.join(", ")}`);
+                    }
+                    if (item.salsa) {
+                        detalles.push(`<strong>Salsa:</strong> ${item.salsa}`);
+                    }
                     if (item.nota) {
-                        detalleExtras += ` | Nota: "${item.nota}"`;
+                        detalles.push(`<em>"${item.nota}"</em>`);
                     }
 
                     const row = document.createElement("div");
-                    row.className = "bg-white border-2 border-[#141413] rounded-2xl p-3.5 shadow-[2px_2px_0px_#141413] flex items-start justify-between gap-3";
+                    row.className = "bg-white border-2 border-[#141413] rounded-2xl p-3 sm:p-3.5 shadow-[2px_2px_0px_#141413] flex items-start justify-between gap-3";
                     row.innerHTML = `
                         <div class="flex-1">
-                            <h4 class="font-serif font-black text-base text-[#141413]">${item.nombre}</h4>
-                            <p class="text-xs text-[#141413]/70 font-medium mt-0.5 leading-snug">${detalleExtras}</p>
-                            <div class="mt-2 font-black text-sm text-[#D9381E]">$${subtotal.toFixed(2)}</div>
+                            <h4 class="font-serif font-black text-sm sm:text-base text-[#141413]">${item.nombre}</h4>
+                            <div class="text-[11px] text-[#141413]/70 font-medium mt-0.5 leading-snug flex flex-col gap-0.5">${detalles.join(" • ")}</div>
+                            <div class="mt-1.5 font-black text-xs sm:text-sm text-[#D9381E]">$${subtotal.toFixed(2)} <small class="text-neutral-500 font-bold">(${(subtotal * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)</small></div>
                         </div>
                         <div class="flex items-center gap-1.5 bg-[#F6F4EF] p-1 rounded-xl border border-[#141413]">
                             <button class="w-6 h-6 rounded-lg bg-white text-[#141413] font-black text-xs flex items-center justify-center border border-[#141413] hover:bg-[#D9381E] hover:text-white transition-colors cursor-pointer" onclick="modificarCantidadItem(${item.idUnico}, -1)">-</button>
@@ -1107,42 +1509,89 @@
                 });
             }
 
-            let textoItemsWA = "";
-            carrito.forEach(item => {
-                const subtotal = item.precioUnitario * item.cantidad;
-                let detalleExtras = "";
-                if (item.extras.length > 0) {
-                    detalleExtras += `Extras: ${item.extras.join(", ")} | `;
-                }
-                detalleExtras += `Salsa: ${item.salsa}`;
-                if (item.nota) {
-                    detalleExtras += ` | Nota: "${item.nota}"`;
-                }
-                textoItemsWA += `• ${item.cantidad}x ${item.nombre} ($${subtotal.toFixed(2)})\n`;
-                textoItemsWA += `  └ ${detalleExtras}\n`;
-            });
-
-            const mensaje = `🍔 *NUEVO PEDIDO - BURGER 55*\n` +
-                            `Modalidad: *${tipoEntrega}*\n` +
-                            `Pago sugerido: *${metodoPago}*\n` +
-                            `--------------------------------\n` +
-                            `${textoItemsWA}` +
-                            `--------------------------------\n` +
-                            `*TOTAL A PAGAR:*\n` +
-                            `💵 $${totalUSD.toFixed(2)}\n` +
-                            `🇻🇪 Bs. ${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n` +
-                            `_(Tasa BCV: ${tasaOficial.toFixed(2)} Bs/$)_\n\n` +
-                            `Hola, confirmo este pedido para entrega.`;
-
-            if (waLink) {
-                waLink.href = `https://wa.me/${CONFIG.telefonoWA}?text=${encodeURIComponent(mensaje)}`;
+            if (metodoPago === "Efectivo Divisas ($)") {
+                calcularVuelto();
+            } else {
+                actualizarTicketWA();
             }
 
             if (bar) {
                 bar.classList.add("active");
-                bar.classList.remove("translate-y-28", "pointer-events-none");
+                bar.classList.remove("translate-y-32", "pointer-events-none");
                 bar.classList.add("translate-y-0", "pointer-events-auto");
             }
+        }
+
+        /* CONSTRUCTOR DEL TICKET PROFESIONAL DE WHATSAPP */
+        function actualizarTicketWA() {
+            const waLink = document.getElementById("wa-checkout-link");
+            if (!waLink) return;
+
+            if (carrito.length === 0) {
+                waLink.href = "#";
+                return;
+            }
+
+            const subtotalComidaUSD = carrito.reduce((acc, cur) => acc + (cur.precioUnitario * cur.cantidad), 0);
+            const costoDeliveryUSD = modalidadEntrega === "Delivery" ? zonaDeliverySeleccionada.costo : 0.00;
+            const totalFinalUSD = subtotalComidaUSD + costoDeliveryUSD;
+            const totalFinalBs = totalFinalUSD * tasaOficial;
+
+            let itemsWA = "";
+            carrito.forEach(item => {
+                const subtotal = item.precioUnitario * item.cantidad;
+                itemsWA += `• ${item.cantidad}x ${item.nombre} ($${subtotal.toFixed(2)})\n`;
+                if (item.extras && item.extras.length > 0) {
+                    itemsWA += `  └ Extras: ${item.extras.join(", ")}\n`;
+                }
+                if (item.sinIngredientes && item.sinIngredientes.length > 0) {
+                    itemsWA += `  └ Sin: ${item.sinIngredientes.join(", ")}\n`;
+                }
+                if (item.salsa) {
+                    itemsWA += `  └ Salsa: ${item.salsa}\n`;
+                }
+                if (item.nota) {
+                    itemsWA += `  └ Nota: "${item.nota}"\n`;
+                }
+            });
+
+            let modalidadDetalle = "";
+            if (modalidadEntrega === "Delivery") {
+                const direccion = (document.getElementById("delivery-address-input")?.value || "").trim();
+                modalidadDetalle = `🛵 *Modalidad:* Delivery Caracas (${zonaDeliverySeleccionada.nombre} +$${zonaDeliverySeleccionada.costo.toFixed(2)})\n` +
+                                   `📍 *Dirección:* ${direccion ? direccion : "Pendiente por confirmar"}\n`;
+            } else {
+                modalidadDetalle = `🏪 *Modalidad:* Pick-up (Retiro en local - Las Mercedes) - Gratis\n`;
+            }
+
+            let detallePago = `💳 *Método de Pago:* ${metodoPago}\n`;
+            if (metodoPago === "Efectivo Divisas ($)" && billetePagoDivisas > 0) {
+                if (billetePagoDivisas > totalFinalUSD) {
+                    const vueltoUSD = (billetePagoDivisas - totalFinalUSD).toFixed(2);
+                    const vueltoBs = (vueltoUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    detallePago += `💵 *Paga con billete de:* $${billetePagoDivisas.toFixed(2)}\n` +
+                                   `🔄 *Vuelto a llevar:* $${vueltoUSD} (${vueltoBs} Bs)\n`;
+                } else if (Math.abs(billetePagoDivisas - totalFinalUSD) < 0.01) {
+                    detallePago += `💵 *Paga exacto:* $${billetePagoDivisas.toFixed(2)} (Sin vuelto)\n`;
+                }
+            }
+
+            const mensaje = `🍔 *NUEVO PEDIDO - BURGER 55*\n` +
+                            `🔖 *Orden:* ${orderNumber}\n` +
+                            `${modalidadDetalle}` +
+                            `${detallePago}` +
+                            `--------------------------------\n` +
+                            `${itemsWA}` +
+                            `--------------------------------\n` +
+                            `Subtotal comida: $${subtotalComidaUSD.toFixed(2)} (${(subtotalComidaUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)\n` +
+                            `Delivery: ${modalidadEntrega === "Delivery" ? `$${costoDeliveryUSD.toFixed(2)} (${(costoDeliveryUSD * tasaOficial).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs)` : "Gratis ($0.00)"}\n` +
+                            `*TOTAL FINAL A PAGAR:*\n` +
+                            `💵 *$${totalFinalUSD.toFixed(2)}*\n` +
+                            `🇻🇪 *Bs. ${totalFinalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}*\n` +
+                            `_(Tasa oficial BCV: ${tasaOficial.toFixed(2)} Bs/$)_\n\n` +
+                            `Hola, confirmo este pedido para ${modalidadEntrega === "Delivery" ? "entrega por delivery" : "retiro en local"}.`;
+
+            waLink.href = `https://wa.me/${CONFIG.telefonoWA}?text=${encodeURIComponent(mensaje)}`;
         }
 
         function abrirDrawer() {
@@ -1160,7 +1609,7 @@
             if (!toast) {
                 toast = document.createElement("div");
                 toast.id = "toast-feedback";
-                toast.className = "fixed top-20 right-4 z-50 bg-[#141413] text-[#F6F4EF] border-2 border-[#141413] shadow-[3px_3px_0px_#F59E0B] px-4 py-2.5 rounded-2xl font-bold text-xs flex items-center gap-2 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none";
+                toast.className = "fixed top-16 sm:top-20 right-3 sm:right-4 z-50 bg-[#141413] text-[#F6F4EF] border-2 border-[#141413] shadow-[3px_3px_0px_#F59E0B] px-4 py-2.5 rounded-2xl font-bold text-xs flex items-center gap-2 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none";
                 document.body.appendChild(toast);
             }
             toast.innerHTML = `
